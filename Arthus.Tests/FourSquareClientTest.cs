@@ -8,14 +8,16 @@ namespace Arthus.Tests
     public class FourSquareClientTest
     {
         [Test]
-        public void ShouldAssertUserLogin()
+        public void ShouldAssertUser()
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
 
-            context.ValidateUser(delegate(User user)
+            context.OnUserReponseReceived += delegate(object sender, FourSquareEventArgs<UserResponse> args)
             {
-                Assert.IsTrue(user.Id > 0);
-            });
+                Assert.IsTrue(args.Data.User.Id > 0);
+            };
+
+            context.AssertUser();
         }
 
         [Test]
@@ -23,11 +25,15 @@ namespace Arthus.Tests
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
 
-            context.FindNearbyVenues(null, "40.7204", "-73.9933", delegate(IList<VenueGroup> groups)
+            context.OnVenueResponseReceived += delegate(object sender, FourSquareEventArgs<VenueResponse> args)
             {
+                IList<VenueGroup> groups  = args.Data.Groups;
+
                 Assert.IsTrue(groups.Count > 0);
                 Assert.IsTrue(groups[0].Venues[0].Id > 0);
-            });
+            };
+
+            context.FindNearbyVenues("40.7204", "-73.9933");
         }
 
         [Test]
@@ -35,10 +41,9 @@ namespace Arthus.Tests
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
 
-            context.OnDataReceived += delegate(object sender, FourSquareEventArgs args)
+            context.OnCheckInResponseReceived += delegate(object sender, FourSquareEventArgs<CheckInResponse> args)
             {
-                var checkIn = args.Data as CheckInResponse;
-                Assert.True(checkIn.Id > 0);
+                Assert.True(args.Data.Id > 0);
             };
 
             context.CheckIn(new CheckInRequest{
@@ -53,13 +58,12 @@ namespace Arthus.Tests
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
 
-            context.OnDataReceived += delegate(object sender, FourSquareEventArgs args)
+            context.OnCheckInResponseReceived += delegate(object sender, FourSquareEventArgs<CheckInResponse> checkIn)
             {
-                var checkIn = args.Data as CheckInResponse;
-                Assert.True(checkIn.Id > 0);
+                Assert.True(checkIn.Data.Id > 0);
             };
 
-            context.CheckIn(new CheckInRequest{VenueId = 9194686 });
+            context.CheckIn(new CheckInRequest{ VenueId = 9194686 });
         }
 
         private const string username = "mehfuz@gmail.com";

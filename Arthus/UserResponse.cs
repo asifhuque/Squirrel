@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Arthus
 {
-    internal class UserResponse
+    public class UserResponse : ResponseObject
     {
         [JsonProperty("User")]
         public User User { get; set; }

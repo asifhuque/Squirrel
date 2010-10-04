@@ -1,4 +1,6 @@
-﻿using System.ComponentModel;
+﻿using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
+using System.ComponentModel;
 
 namespace Arthus
 {
@@ -12,15 +14,24 @@ namespace Arthus
 
         #endregion
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="prop"></param>
+        [JsonProperty("error")]
+        public string Error
+        {
+            get { return error; }
+            set
+            {
+                error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
         protected virtual void OnPropertyChanged(string prop)
         {
             var e = new PropertyChangedEventArgs(prop);
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, e);
         }
+
+        private string error;
     }
 }

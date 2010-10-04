@@ -2,9 +2,9 @@
 
 namespace Arthus
 {
-    public class FourSquareEventArgs : EventArgs
+    public class FourSquareEventArgs<T> : EventArgs
     {
-        public FourSquareEventArgs(object data)
+        public FourSquareEventArgs(T data)
         {
             this.data = data;
         }
@@ -12,7 +12,7 @@ namespace Arthus
         /// <summary>
         /// Gets the response data.
         /// </summary>
-        public object Data
+        public T Data
         {
             get
             {
@@ -20,6 +20,6 @@ namespace Arthus
             }
         }
 
-        private object data;
+        private T data;
     }
 }

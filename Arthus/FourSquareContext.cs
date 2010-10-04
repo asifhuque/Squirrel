@@ -4,8 +4,6 @@ using System.Net;
 using System.IO;
 using System.Threading;
 using Newtonsoft.Json;
-using Arthus.Domain;
-using System.Collections.Generic;
 
 namespace Arthus
 {
@@ -40,7 +38,10 @@ namespace Arthus
 
             DoRequest<CheckInResponseContainer>(req, delegate(CheckInResponseContainer checkInResponse)
             {
-                RaiseOnDataReceived(checkInResponse.Response);
+                if (OnCheckInResponseReceived != null)
+                {
+                    OnCheckInResponseReceived(this, new FourSquareEventArgs<CheckInResponse>(checkInResponse.Response));
+                }
             });
         }
 
@@ -50,7 +51,18 @@ namespace Arthus
         /// <param name="key">Matching venue to search for (use null/empty to search all)</param>
         /// <param name="latitude">Lattitude</param>
         /// <param name="longitude">Longitude</param>
-        public void FindNearbyVenues(string key, string latitude, string longitude, Action<IList<VenueGroup>> sucessCallback)
+        public void FindNearbyVenues(string latitude, string longitude)
+        {
+            FindNearestVenues(string.Empty, latitude, longitude);
+        }
+            
+        /// <summary>
+        /// Searches a group of venues for a specific location and keyword
+        /// </summary>
+        /// <param name="key">Matching venue to search for (use null/empty to search all)</param>
+        /// <param name="latitude">Lattitude</param>
+        /// <param name="longitude">Longitude</param>
+        public void FindNearestVenues(string key, string latitude, string longitude)
         {
             string format = "venues.json?geolat={0}&geolong={1}&l={2}{3}";
 
@@ -66,23 +78,30 @@ namespace Arthus
 
             DoRequest<VenueResponse>(req, delegate(VenueResponse r)
             {
-                if (sucessCallback != null)
+                if (OnVenueResponseReceived != null)
                 {
-                    sucessCallback(r.Groups);
+                    OnVenueResponseReceived(this, new FourSquareEventArgs<VenueResponse>(r));
                 }
             });
         }
 
         /// <summary>
-        /// Validates the credential and returns user info from foursquare.
+        /// Asserts the current user.
         /// </summary>
         /// <returns></returns>
-        public void ValidateUser(Action<User> successCallback)
+        public void AssertUser()
         {
-            GetUser(0, string.Empty, false, false, successCallback);
+            AssertUser(0, string.Empty, false, false);
         }
 
-        public void GetUser(int userId, string twitterId, bool badges, bool mayor, Action<User> callback)
+        /// <summary>
+        /// Asserts a specific user.
+        /// </summary>
+        /// <param name="userId">User id for the user</param>
+        /// <param name="twitterId">Twitter id for the user.</param>
+        /// <param name="badges">Specifies whether to include badges</param>
+        /// <param name="mayor">Specifies whether to include mayor tag</param>
+        public void AssertUser(int userId, string twitterId, bool badges, bool mayor)
         {
             UserRequest userRequest = new UserRequest
             {
@@ -105,24 +124,16 @@ namespace Arthus
                     throw new Exception("Invalid user");
                 }
 
-                if (callback != null)
+                if (OnUserReponseReceived != null)
                 {
-                    callback(userResponse.User);
+                    OnUserReponseReceived(this, new FourSquareEventArgs<UserResponse>(userResponse));
                 }
             });
 
             // TODO : raise error and add event handler here.
         }
 
-        private void RaiseOnDataReceived<T>(T data)
-        {
-            if (OnDataReceived != null)
-            {
-                OnDataReceived(this, new FourSquareEventArgs(data));
-            }
-        }
-
-        private void DoRequest<T>(HttpWebRequest req, Action<T> callback)
+        private void DoRequest<T>(HttpWebRequest req, Action<T> callback) where T : ResponseObject
         {
             T obj = Activator.CreateInstance<T>();
 
@@ -134,6 +145,11 @@ namespace Arthus
                 {
                     string responseText = GetResponseText(req.EndGetResponse(a));
                     obj = ProcessResponse<T>(responseText);
+
+                    if (!string.IsNullOrEmpty(obj.Error))
+                    {
+                        throw new FourSquareException(obj.Error);
+                    }
 
                     callback(obj);
                 }
@@ -153,7 +169,7 @@ namespace Arthus
             // TODO : Add event handler.
             if (exception != null)
             {
-                throw new Exception(exception.Message);
+                throw new FourSquareException(exception.Message);
             }
         }
 
@@ -166,7 +182,7 @@ namespace Arthus
             req.UserAgent = "Arthus:1.0.0 Guid/" + Guid.NewGuid().ToString("N");
         }
 
-        private T ProcessResponse<T>(string responseString)
+        private T ProcessResponse<T>(string responseString) where T : ResponseObject
         {
             T obj;
 
@@ -201,7 +217,9 @@ namespace Arthus
             return responseText;
         }
 
-        public EventHandler<FourSquareEventArgs> OnDataReceived;
+        public EventHandler<FourSquareEventArgs<VenueResponse>> OnVenueResponseReceived;
+        public EventHandler<FourSquareEventArgs<CheckInResponse>> OnCheckInResponseReceived;
+        public EventHandler<FourSquareEventArgs<UserResponse>> OnUserReponseReceived;
 
         private bool async;
 
