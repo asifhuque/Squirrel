@@ -1,0 +1,8 @@
+C:\Source\Arthus\Arthus\bin\Debug\Arthus.dll
+C:\Source\Arthus\Arthus\bin\Debug\Arthus.pdb
+C:\Source\Arthus\Arthus\bin\Debug\Newtonsoft.Json.dll
+C:\Source\Arthus\Arthus\bin\Debug\Newtonsoft.Json.pdb
+C:\Source\Arthus\Arthus\bin\Debug\Newtonsoft.Json.xml
+C:\Source\Arthus\Arthus\obj\Debug\ResolveAssemblyReference.cache
+C:\Source\Arthus\Arthus\obj\Debug\Arthus.dll
+C:\Source\Arthus\Arthus\obj\Debug\Arthus.pdb
