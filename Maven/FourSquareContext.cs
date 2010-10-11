@@ -8,6 +8,9 @@ using Maven.Abstraction;
 
 namespace Maven
 {
+    /// <summary>
+    /// Entry point class for interacting with foursquare.
+    /// </summary>
     public class FourSquareContext
     {
         public FourSquareContext(string username, string password) : this(username, password, true)
@@ -90,6 +93,27 @@ namespace Maven
         public void AssertUser()
         {
            AssertUser(0, string.Empty, false, false);
+        }
+
+        /// <summary>
+        /// Asserts the current user.
+        /// </summary>
+        /// <param name="twitterId">Twitter id for the user.</param>
+        /// <param name="badges">Specifies whether to include badges</param>
+        /// <param name="mayor">Specifies whether to include mayor tag</param>
+        public void AssertUser(string twitterId, bool badges, bool mayor)
+        {
+            AssertUser(0, twitterId, badges, mayor);
+        }
+
+        /// <summary>
+        /// Asserts the current user.
+        /// </summary>
+        /// <param name="badges">Specifies whether to include badges</param>
+        /// <param name="mayor">Specifies whether to include mayor tag</param>
+        public void AssertUser(bool badges, bool mayor)
+        {
+            AssertUser(0, string.Empty, badges, mayor);
         }
 
         /// <summary>
@@ -188,10 +212,10 @@ namespace Maven
         private void AuthorizeRequest(HttpWebRequest req, string username, string password)
         {
             string enHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, password)));
-            req.Headers.Add("Authorization", string.Format("Basic {0}", enHeader));
+            req.Headers["Authorization"] = string.Format("Basic {0}", enHeader);
 
             req.Credentials = new NetworkCredential(username, password);
-            req.UserAgent = "SuperNova:1.0.0 Guid/" + Guid.NewGuid().ToString("N");
+            req.UserAgent = "Maven:0.5.0 Guid/" + Guid.NewGuid().ToString("N");
         }
 
         private T ProcessResponse<T>(string responseString) where T : ResponseObject

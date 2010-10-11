@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maven", "Maven\Maven.csproj", "{A1C0DE64-8FB0-40BC-A998-5B32BFA86BF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maven.Tests", "Maven.Tests\Maven.Tests.csproj", "{7D93FA79-74A5-4C81-B700-043F7916BD1E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Maven.Tests", "Tests\Maven.Tests.csproj", "{7D93FA79-74A5-4C81-B700-043F7916BD1E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

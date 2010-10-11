@@ -31,6 +31,7 @@ namespace Maven
         /// <summary>
         /// Incldues the mayor information for the specific user.
         /// </summary>
+        [RequestProperty("mayor")]
         public bool Mayor { get; set; }
 
         #region IRequest Members

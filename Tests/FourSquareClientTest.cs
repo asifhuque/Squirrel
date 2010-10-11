@@ -7,7 +7,7 @@ namespace Maven.Tests
     public class FourSquareClientTest
     {
         [Test]
-        public void ShouldAssertUser()
+        public void ShouldAssertUserForValidCredentials()
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
 
@@ -21,7 +21,23 @@ namespace Maven.Tests
         }
 
         [Test]
-        public void ShouldAssertFindNearbyVenues()
+        public void ShouldAssertUserDetail()
+        {
+            FourSquareContext context = new FourSquareContext(username, password, false);
+
+            context.OnResponseReceived += delegate(object sender, FourSquareEventArgs arg)
+            {
+                var userResponse = arg.Data as UserResponse;
+
+                Assert.IsTrue(userResponse.User.Id > 0);
+                Assert.IsTrue(userResponse.User.Badges.Count > 0);
+            };
+
+            context.AssertUser(true, true);
+        }
+
+        [Test]
+        public void ShouldAssertResponseForFindNearByVenues()
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
 
@@ -43,7 +59,7 @@ namespace Maven.Tests
 
             context.OnResponseReceived += delegate(object sender, FourSquareEventArgs args)
             {
-                Assert.True(args.Data.Id > 0);
+                Assert.IsTrue(args.Data.Id > 0);
             };
 
             context.CheckIn(new CheckInRequest{
@@ -60,14 +76,14 @@ namespace Maven.Tests
 
             context.OnResponseReceived += delegate(object sender, FourSquareEventArgs args)
             {
-                Assert.True(args.Data.Id > 0);
+                Assert.IsTrue(args.Data.Id > 0);
             };
 
             context.CheckIn(new CheckInRequest{ VenueId = 9194686 });
         }
         
         [Test]
-        public void ShouldAssertHierarichalCategories()
+        public void ShouldAssertHierarchalCategories()
         {
             var context = new FourSquareContext(false);
 
@@ -78,9 +94,9 @@ namespace Maven.Tests
 
                 var category = categories.First();
 
-                Assert.IsNotNullOrEmpty(category.FullPathName);
-                Assert.IsNotNullOrEmpty(category.NodeName);
-                Assert.IsNotNullOrEmpty(category.IconUrl);
+                Assert.IsNotEmpty(category.FullPathName);
+                Assert.IsNotEmpty(category.NodeName);
+                Assert.IsNotEmpty(category.IconUrl);
 
                 // assert a sub-category.
                 Assert.IsTrue(category.SubCategories.First().Id > 0);
@@ -90,7 +106,7 @@ namespace Maven.Tests
             context.FetchCategories();
         }
 
-        private const string username = "username";
-        private const string password = "password";
+        private string username = Constants.Username;
+        private string password = Constants.Password;
     }
 }
