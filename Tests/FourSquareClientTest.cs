@@ -17,11 +17,11 @@ namespace Maven.Tests
                 Assert.IsTrue(userResponse.User.Id > 0);
             };
 
-            context.AssertUser();
+            context.GetCurrentUser();
         }
 
         [Test]
-        public void ShouldAssertUserDetail()
+        public void ShouldGetUserForUserId()
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
 
@@ -33,9 +33,8 @@ namespace Maven.Tests
                 Assert.IsTrue(userResponse.User.Badges.Count > 0);
             };
 
-            context.AssertUser(true, true);
+            context.GetUser(33, true, true);
         }
-
         [Test]
         public void ShouldAssertResponseForFindNearByVenues()
         {

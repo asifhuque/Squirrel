@@ -13,8 +13,15 @@ namespace Maven
     /// </summary>
     public class FourSquareContext
     {
+        public FourSquareContext()
+        {
+            this.async = true;
+            // intentionally left blank.   
+        }
+
         public FourSquareContext(string username, string password) : this(username, password, true)
         {
+            this.async = true;
             // intentionally left blank.   
         }
 
@@ -32,6 +39,15 @@ namespace Maven
         }
 
         /// <summary>
+        /// Sets credential to current context.
+        /// </summary>
+        public void SetCredentials(string username, string password)
+        {
+            this.username = username;
+            this.password = password;
+        }
+
+        /// <summary>
         /// Checks in to a specific venue or location.
         /// </summary>
         /// <param name="request">Reqeust to check-in</param>
@@ -46,10 +62,7 @@ namespace Maven
             // must be a post method.
             req.Method = "POST";
 
-            DoRequest<CheckInResponseContainer>(req, delegate(CheckInResponseContainer checkInResponse)
-            {
-                RaiseEvent(checkInResponse.Response);
-            });
+            DoRequest<CheckInResponseContainer>(req);
         }
 
         /// <summary>
@@ -80,55 +93,38 @@ namespace Maven
 
             HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(vRequest.GetUrl());
 
-            DoRequest<VenueResponse>(req, delegate(VenueResponse venueResponse)
-            {
-                RaiseEvent(venueResponse);
-            });
+            DoRequest<VenueResponse>(req);
         }
 
         /// <summary>
-        /// Asserts the current user.
+        /// Gets the current user.
         /// </summary>
-        /// <returns></returns>
-        public void AssertUser()
+        public void GetCurrentUser()
         {
-           AssertUser(0, string.Empty, false, false);
+           GetUser(0, false, false);
         }
 
+
         /// <summary>
-        /// Asserts the current user.
+        /// Gets the current user.
         /// </summary>
-        /// <param name="twitterId">Twitter id for the user.</param>
-        /// <param name="badges">Specifies whether to include badges</param>
-        /// <param name="mayor">Specifies whether to include mayor tag</param>
-        public void AssertUser(string twitterId, bool badges, bool mayor)
+        public void GetCurrentUser(bool badges, bool mayor)
         {
-            AssertUser(0, twitterId, badges, mayor);
+            GetUser(0, badges, mayor);
         }
-
+      
         /// <summary>
-        /// Asserts the current user.
-        /// </summary>
-        /// <param name="badges">Specifies whether to include badges</param>
-        /// <param name="mayor">Specifies whether to include mayor tag</param>
-        public void AssertUser(bool badges, bool mayor)
-        {
-            AssertUser(0, string.Empty, badges, mayor);
-        }
-
-        /// <summary>
-        /// Asserts a specific user.
+        /// Gets a specific user.
         /// </summary>
         /// <param name="userId">User id for the user</param>
         /// <param name="twitterId">Twitter id for the user.</param>
         /// <param name="badges">Specifies whether to include badges</param>
         /// <param name="mayor">Specifies whether to include mayor tag</param>
-        public void AssertUser(int userId, string twitterId, bool badges, bool mayor)
+        public void GetUser(int userId, bool badges, bool mayor)
         {
             UserRequest userRequest = new UserRequest
             {
                 UserId = userId,
-                TwitterId = twitterId,
                 Badges = badges,
                 Mayor = mayor
             };
@@ -139,14 +135,7 @@ namespace Maven
             // must be authorized.
             AuthorizeRequest(req, username, password);
 
-            DoRequest<UserResponse>(req, delegate(UserResponse userResponse)
-            {
-                if (!userResponse.IsSuccess())
-                {
-                    throw new Exception("Invalid user");
-                }
-                RaiseEvent(userResponse);
-            });
+            DoRequest<UserResponse>(req);
 
             // TODO : raise error and add event handler here.
         }
@@ -160,21 +149,18 @@ namespace Maven
             var categoriesRequest = new CategoriesRequest();
             HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(categoriesRequest.GetUrl());
 
-            DoRequest<CategoriesResponse>(req, delegate(CategoriesResponse categoryReponse)
-            {
-                RaiseEvent(categoryReponse);
-            });
+            DoRequest<CategoriesResponse>(req);
         }
 
 
         #region Private methods
 
-        private void DoRequest<T>(HttpWebRequest req, Action<T> callback) where T : ResponseObject
+        private void DoRequest<T>(HttpWebRequest req) where T : ResponseObject
         {
             T obj = Activator.CreateInstance<T>();
 
             var resetEvent = new AutoResetEvent(false);
-
+          
             req.BeginGetResponse(delegate(IAsyncResult a)
             {
                 try
@@ -186,14 +172,14 @@ namespace Maven
                     {
                         throw new FourSquareException(obj.Error);
                     }
-
-                    callback(obj);
+                    RaiseEvent(obj);
                 }
                 catch (Exception ex)
                 {
                     exception = ex;
                 }
                 ((AutoResetEvent)a.AsyncState).Set();
+
             }, resetEvent);
 
             if (!async)
@@ -256,9 +242,11 @@ namespace Maven
 
         private void RaiseEvent(IResponse response)
         {
-            if (OnResponseReceived != null)
+            EventHandler<FourSquareEventArgs> handler = OnResponseReceived;
+
+            if (handler != null)
             {
-                OnResponseReceived(this, new FourSquareEventArgs(response));
+                handler(this, new FourSquareEventArgs(response));
             }
         }
 
