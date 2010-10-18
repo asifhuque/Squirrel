@@ -62,7 +62,7 @@ namespace Maven
             // must be a post method.
             req.Method = "POST";
 
-            DoRequest<CheckInResponseContainer>(req);
+            DoRequest<CheckInResponse>(req);
         }
 
         /// <summary>
@@ -148,14 +148,18 @@ namespace Maven
         {
             var categoriesRequest = new CategoriesRequest();
             HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(categoriesRequest.GetUrl());
-
-            DoRequest<CategoriesResponse>(req);
+            DoRequest<CheckInResponseContainer, CheckInResponse>(req, x => x.Response);
         }
 
 
         #region Private methods
 
         private void DoRequest<T>(HttpWebRequest req) where T : ResponseObject
+        {
+            DoRequest<T, T>(req, (x) => x);
+        }
+
+        private void DoRequest<T, TRet>(HttpWebRequest req, Func<T, TRet> func) where T : ResponseObject where TRet : ResponseObject
         {
             T obj = Activator.CreateInstance<T>();
 
@@ -166,13 +170,16 @@ namespace Maven
                 try
                 {
                     string responseText = GetResponseText(req.EndGetResponse(a));
-                    obj = ProcessResponse<T>(responseText);
 
-                    if (!string.IsNullOrEmpty(obj.Error))
+                    obj = ProcessResponse<T>(responseText);
+                    TRet ret = func(obj);
+
+                    if (!string.IsNullOrEmpty(ret.Error))
                     {
-                        throw new FourSquareException(obj.Error);
+                        throw new FourSquareException(ret.Error);
                     }
-                    RaiseEvent(obj);
+
+                    RaiseEvent(ret);
                 }
                 catch (Exception ex)
                 {

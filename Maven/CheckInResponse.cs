@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using Maven.Domain;
+using System.Collections.Generic;
 namespace Maven
 {
     public class CheckInResponse : ResponseObject
@@ -76,11 +77,41 @@ namespace Maven
             }
         }
 
+        /// <summary>
+        ///  Get or sets badges for the check-in
+        /// </summary>
+        [JsonProperty("badges")]
+        public IList<Badge> Badges
+        {
+            get { return badges; }
+            set
+            {
+                badges = value;
+                OnPropertyChanged("Badges");
+            }
+        }
+
+        /// <summary>
+        ///  Get or sets scoring for the check-in
+        /// </summary>
+        [JsonProperty("scoring")]
+        public IList<Score> Scoring
+        {
+            get { return scoring; }
+            set
+            {
+                scoring = value;
+                OnPropertyChanged("Scoring");
+            }
+        }
+
         private Venue venue;
         private int id;
         private string message;
         private DateTime createdOn;
         private Mayor mayor;
 
+        private IList<Badge> badges = new List<Badge>();
+        private IList<Score> scoring = new List<Score>();
     }
 }

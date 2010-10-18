@@ -64,7 +64,8 @@ namespace Maven.Tests
             context.CheckIn(new CheckInRequest{
                 Venue = "Barista",
                 Latitude = "23.776516914367676",
-                Longitude = "90.41707277297974"
+                Longitude = "90.41707277297974",
+                IsPrivate = true
             });
         }
 
@@ -78,7 +79,7 @@ namespace Maven.Tests
                 Assert.IsTrue(args.Data.Id > 0);
             };
 
-            context.CheckIn(new CheckInRequest{ VenueId = 9194686 });
+            context.CheckIn(new CheckInRequest{ VenueId = 9194686, IsPrivate = true });
         }
         
         [Test]
