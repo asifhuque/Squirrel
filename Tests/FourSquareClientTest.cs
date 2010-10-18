@@ -65,7 +65,7 @@ namespace Maven.Tests
                 Venue = "Barista",
                 Latitude = "23.776516914367676",
                 Longitude = "90.41707277297974",
-                IsPrivate = true
+                IsPrivate = true,
             });
         }
 
