@@ -66,6 +66,7 @@
     <Compile Include="Domain\Friend.cs" />
     <Compile Include="Domain\Mayor.cs" />
     <Compile Include="Domain\PrimaryCategory.cs" />
+    <Compile Include="Domain\Score.cs" />
     <Compile Include="Domain\Setttings.cs" />
     <Compile Include="Domain\Stats.cs" />
     <Compile Include="Domain\Status.cs" />
