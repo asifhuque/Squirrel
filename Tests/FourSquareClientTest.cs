@@ -1,7 +1,7 @@
 ﻿using NUnit.Framework;
 using System.Linq;
 
-namespace Maven.Tests
+namespace Squirrel.Tests
 {
     [TestFixture]
     public class FourSquareClientTest
@@ -48,14 +48,14 @@ namespace Maven.Tests
                 Assert.IsTrue(venue.Groups[0].Venues[0].Id > 0);
             };
 
-            context.FindNearbyVenues("40.7204", "-73.9933");
+            context.FindVenues("23.77", "90.41");
         }
 
         [Test]
         public void ShouldAssertCheckinForLatLongAndVenueName()
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
-
+            
             context.OnResponseReceived += delegate(object sender, FourSquareEventArgs args)
             {
                 Assert.IsTrue(args.Data.Id > 0);

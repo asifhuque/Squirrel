@@ -1,4 +1,4 @@
-﻿namespace Maven.Tests
+﻿namespace Squirrel.Tests
 {
     public class Constants
     {

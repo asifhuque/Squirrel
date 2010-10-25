@@ -1,5 +1,5 @@
-Maven - FourSquare C# API 0.0.9
-===============================
+Squirrel- C# API wrapper for foursquare 0.0.9
+================================================
 
 Easy to use asychronous API useful for building Silverlight / Windows phone foursquare apps.
 
