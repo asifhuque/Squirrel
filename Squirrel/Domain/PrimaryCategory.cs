@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using Squirrel.Domain.Base;
 
 namespace Squirrel.Domain
 {

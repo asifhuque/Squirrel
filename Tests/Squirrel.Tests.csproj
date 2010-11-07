@@ -45,12 +45,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseFixture.cs" />
     <Compile Include="Constants.cs" />
+    <Compile Include="FakeAsyncResult.cs" />
+    <Compile Include="FakeHttpRequestProxy.cs" />
     <Compile Include="FourSquareClientTest.cs" />
+    <Compile Include="Integration\VenueTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="VenueFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <EmbeddedResource Include="Responses\venues.json" />
+    <EmbeddedResource Include="Responses\venue.json" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Squirrel\Squirrel.csproj">

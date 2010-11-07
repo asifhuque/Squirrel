@@ -11,13 +11,10 @@ namespace Squirrel.Tests
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
 
-            context.OnResponseReceived += delegate(object sender, FourSquareEventArgs arg)
+            context.GetCurrentUser(delegate(UserResponse response)
             {
-                var userResponse = arg.Data as UserResponse;
-                Assert.IsTrue(userResponse.User.Id > 0);
-            };
-
-            context.GetCurrentUser();
+                Assert.IsTrue(response.User.Id > 0);
+            });
         }
 
         [Test]
@@ -25,47 +22,34 @@ namespace Squirrel.Tests
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
 
-            context.OnResponseReceived += delegate(object sender, FourSquareEventArgs arg)
+            int userId = 33;
+
+            bool badges = true;
+            bool mayor = true;
+
+            context.GetUser(userId, badges, mayor, delegate(UserResponse response)
             {
-                var userResponse = arg.Data as UserResponse;
-
-                Assert.IsTrue(userResponse.User.Id > 0);
-                Assert.IsTrue(userResponse.User.Badges.Count > 0);
-            };
-
-            context.GetUser(33, true, true);
-        }
-        [Test]
-        public void ShouldAssertResponseForFindNearByVenues()
-        {
-            FourSquareContext context = new FourSquareContext(username, password, false);
-
-            context.OnResponseReceived += delegate(object sender, FourSquareEventArgs args)
-            {
-                var venue  = args.Data as VenueResponse;
-
-                Assert.IsTrue(venue.Groups.Count > 0);
-                Assert.IsTrue(venue.Groups[0].Venues[0].Id > 0);
-            };
-
-            context.FindVenues("23.77", "90.41");
+                Assert.IsTrue(response.User.Id > 0);
+                Assert.IsTrue(response.User.Badges.Count > 0);
+            });
         }
 
         [Test]
         public void ShouldAssertCheckinForLatLongAndVenueName()
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
-            
-            context.OnResponseReceived += delegate(object sender, FourSquareEventArgs args)
+        
+            var request = new CheckInRequest
             {
-                Assert.IsTrue(args.Data.Id > 0);
-            };
-
-            context.CheckIn(new CheckInRequest{
                 Venue = "Barista",
                 Latitude = "23.776516914367676",
                 Longitude = "90.41707277297974",
                 IsPrivate = true,
+            };
+
+            context.CheckIn(request, delegate(CheckInResponse response)
+            {
+                Assert.IsTrue(response.Id > 0);
             });
         }
 
@@ -74,12 +58,12 @@ namespace Squirrel.Tests
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
 
-            context.OnResponseReceived += delegate(object sender, FourSquareEventArgs args)
-            {
-                Assert.IsTrue(args.Data.Id > 0);
-            };
+            var request = new CheckInRequest { VenueId = 9194686, IsPrivate = true };
 
-            context.CheckIn(new CheckInRequest{ VenueId = 9194686, IsPrivate = true });
+            context.CheckIn(request, delegate(CheckInResponse response)
+            {
+                Assert.IsTrue(response.Id > 0);
+            });
         }
         
         [Test]
@@ -87,9 +71,8 @@ namespace Squirrel.Tests
         {
             var context = new FourSquareContext(false);
 
-            context.OnResponseReceived += delegate(object sender, FourSquareEventArgs args)
+            context.GetCategories(delegate(CategoryResponse response)
             {
-                var response = args.Data as CategoriesResponse;
                 var categories = response.Categories;
 
                 var category = categories.First();
@@ -98,12 +81,8 @@ namespace Squirrel.Tests
                 Assert.IsNotEmpty(category.NodeName);
                 Assert.IsNotEmpty(category.IconUrl);
 
-                // assert a sub-category.
                 Assert.IsTrue(category.SubCategories.First().Id > 0);
-
-            };
-
-            context.FetchCategories();
+            });
         }
 
         private string username = Constants.Username;

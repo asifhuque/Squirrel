@@ -5,7 +5,7 @@ using Squirrel.Attributes;
 namespace Squirrel
 {
     [RequestMethod("user.json")]
-    public class UserRequest : IRequestUrl
+    public class UserRequest : IUrlProcessor
     {
         /// <summary>
         /// Gets or sets the user Id
@@ -38,7 +38,7 @@ namespace Squirrel
 
         public string GetUrl()
         {
-            return UrlBuilder.GetUrl(this);
+            return UrlProcessorFactory.Process(this);
         }
 
         #endregion

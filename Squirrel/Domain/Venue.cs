@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using Squirrel.Domain.Base;
 
 namespace Squirrel.Domain
 {
@@ -120,7 +122,7 @@ namespace Squirrel.Domain
         ///  Get or sets latitude of the venue
         /// </summary>
         [JsonProperty("geolat")]
-        public string Latitude
+        public double Latitude
         {
             get { return latitude; }
             set
@@ -134,7 +136,7 @@ namespace Squirrel.Domain
         ///  Get or sets longitude of the venue
         /// </summary>
         [JsonProperty("geolong")]
-        public string Longitude
+        public double Longitude
         {
             get { return longitude; }
             set
@@ -157,6 +159,35 @@ namespace Squirrel.Domain
                 OnPropertyChanged("Stats");
             }
         }
+
+        /// <summary>
+        ///  Get or sets the tips for the venue.
+        /// </summary>
+        [JsonProperty("tips")]
+        public IList<Tip> Tips
+        {
+            get { return tips; }
+            set
+            {
+                tips = value;
+                OnPropertyChanged("Tips");
+            }
+        }
+
+        /// <summary>
+        ///  Get or set the specials associated with this venue.
+        /// </summary>
+        [JsonProperty("specials")]
+        public IList<Special> Specials
+        {
+            get { return specials; }
+            set
+            {
+                specials = value;
+                OnPropertyChanged("Specials");
+            }
+        }
+
 
         /// <summary>
         ///  Get or sets phone number of the venue
@@ -208,11 +239,15 @@ namespace Squirrel.Domain
         private string state;
         private string zip;
         private bool verified;
-        private string latitude;
-        private string longitude;
+        private double latitude;
+        private double longitude;
         private Stats stats;
         private string phone;
         private string twitter;
         private string distance;
+
+        private IList<Special> specials = new List<Special>();
+        private IList<Tip> tips = new List<Tip>();
+
     }
 }

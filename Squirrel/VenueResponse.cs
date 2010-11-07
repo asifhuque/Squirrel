@@ -1,25 +1,28 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 using Newtonsoft.Json;
 using Squirrel.Domain;
 
 namespace Squirrel
 {
-    public class VenueResponse : ResponseObject
+    public class VenueResponse : Domain.Base.ResponseObject
     {
         /// <summary>
-        ///  Get or sets id of the user
+        /// Gets or sets the venue object.
         /// </summary>
-        [JsonProperty("groups")]
-        public IList<VenueGroup> Groups
+        [JsonProperty("venue")]
+        public Venue Venue
         {
-            get { return groups; }
+            get { return venue; }
             set
             {
-                groups = value;
+                venue = value;
                 OnPropertyChanged("Groups");
             }
         }
 
-        private IList<VenueGroup> groups = new List<VenueGroup>();
+        private Venue venue;
     }
 }

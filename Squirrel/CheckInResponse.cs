@@ -1,8 +1,9 @@
-﻿
-using Newtonsoft.Json;
+﻿using Newtonsoft.Json;
 using System;
 using Squirrel.Domain;
 using System.Collections.Generic;
+using Squirrel.Domain.Base;
+
 namespace Squirrel
 {
     public class CheckInResponse : ResponseObject

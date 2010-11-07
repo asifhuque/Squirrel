@@ -5,6 +5,7 @@ using System.IO;
 using System.Threading;
 using Newtonsoft.Json;
 using Squirrel.Abstraction;
+using Squirrel.Domain.Base;
 
 namespace Squirrel
 {
@@ -13,15 +14,19 @@ namespace Squirrel
     /// </summary>
     public class FourSquareContext
     {
-        public FourSquareContext()
+        public FourSquareContext(IHttpRequestProxy request, bool async)
         {
-            this.async = true;
+            this.httpRequest = request;
+            this.async = async;
+        }
+
+        public FourSquareContext() : this(new HttpRequestProxy(), true)
+        {
             // intentionally left blank.   
         }
 
         public FourSquareContext(string username, string password) : this(username, password, true)
         {
-            this.async = true;
             // intentionally left blank.   
         }
 
@@ -31,11 +36,10 @@ namespace Squirrel
             // intentionally left blank.   
         }
 
-        public FourSquareContext(string username, string password, bool async)
+        public FourSquareContext(string username, string password, bool async) : this(new HttpRequestProxy(), async)
         {
             this.username = username;
             this.password = password;
-            this.async = async;
         }
 
         /// <summary>
@@ -51,18 +55,18 @@ namespace Squirrel
         /// Checks in to a specific venue or location.
         /// </summary>
         /// <param name="request">Reqeust to check-in</param>
-        public void CheckIn(CheckInRequest request)
+        public void CheckIn(CheckInRequest checkInrequest, Action<CheckInResponse> response)
         {
-            string url = request.GetUrl();
-            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
+            string url = checkInrequest.GetUrl();
+            HttpWebRequest req = httpRequest.Create(url);
 
             // must be authorized.
             AuthorizeRequest(req, username, password);
 
             // must be a post method.
-            req.Method = "POST";
+            req.Method = HttpRequestMethod.POST;
 
-            DoRequest<CheckInResponse>(req);
+            ProcessRequestAsync<CheckInResponse>(req, response);
         }
 
         /// <summary>
@@ -71,9 +75,9 @@ namespace Squirrel
         /// <param name="key">Matching venue to search for (use null/empty to search all)</param>
         /// <param name="latitude">Lattitude</param>
         /// <param name="longitude">Longitude</param>
-        public void FindVenues(string latitude, string longitude)
+        public void FindVenues(double latitude, double longitude, Action<VenuesResponse> response)
         {
-            FindVenues(string.Empty, latitude, longitude);
+            FindVenues(string.Empty, latitude, longitude, response);
         }
             
         /// <summary>
@@ -82,36 +86,53 @@ namespace Squirrel
         /// <param name="text">Matching venue to search for (use null/empty to search all)</param>
         /// <param name="latitude">Lattitude</param>
         /// <param name="longitude">Longitude</param>
-        public void FindVenues(string text, string latitude, string longitude)
+        public void FindVenues(string text, double latitude, double longitude, Action<VenuesResponse> response)
         {
-            VenueRequest vRequest = new VenueRequest
+            VenuesRequest vRequest = new VenuesRequest
             {
                 Latitude = latitude,
                 Longitude = longitude,
                 Text = text,
-                Count = 50
+                Limit = 50
             };
+            ProcessRequestAsync<VenuesResponse>(httpRequest.Create(vRequest.GetUrl()), response);
+        }
 
-            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(vRequest.GetUrl());
+        /// <summary>
+        /// Gets a venue for a specific vid.
+        /// </summary>
+        /// <param name="venueId">Target venue id</param>
+        /// <param name="venueResponse">Response containing venue object.</param>
+        public void GetVenue(int venueId, Action<VenueResponse> venueResponse)
+        {
+            var vRequest = new VenueRequest { Id = venueId };
 
-            DoRequest<VenueResponse>(req);
+            HttpWebRequest req = httpRequest.Create(vRequest.GetUrl());
+
+            if (HasCredientials())
+            {
+                // must be authorized.
+                AuthorizeRequest(req, username, password);
+            }
+
+            ProcessRequestAsync<VenueResponse>(req, venueResponse);
         }
 
         /// <summary>
         /// Gets the current user.
         /// </summary>
-        public void GetCurrentUser()
+        public void GetCurrentUser(Action<UserResponse> response)
         {
-           GetUser(0, false, false);
+           GetUser(0, false, false, response);
         }
 
 
         /// <summary>
         /// Gets the current user.
         /// </summary>
-        public void GetCurrentUser(bool badges, bool mayor)
+        public void GetCurrentUser(bool badges, bool mayor, Action<UserResponse> response)
         {
-            GetUser(0, badges, mayor);
+            GetUser(0, badges, mayor, response);
         }
       
         /// <summary>
@@ -121,7 +142,7 @@ namespace Squirrel
         /// <param name="twitterId">Twitter id for the user.</param>
         /// <param name="badges">Specifies whether to include badges</param>
         /// <param name="mayor">Specifies whether to include mayor tag</param>
-        public void GetUser(int userId, bool badges, bool mayor)
+        public void GetUser(int userId, bool badges, bool mayor, Action<UserResponse> response)
         {
             UserRequest userRequest = new UserRequest
             {
@@ -131,12 +152,13 @@ namespace Squirrel
             };
 
             string url = userRequest.GetUrl();
-            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(url);
+
+            HttpWebRequest req = httpRequest.Create(url);
 
             // must be authorized.
             AuthorizeRequest(req, username, password);
 
-            DoRequest<UserResponse>(req);
+            ProcessRequestAsync<UserResponse>(req, response);
 
             // TODO : raise error and add event handler here.
         }
@@ -145,32 +167,32 @@ namespace Squirrel
         /// <summary>
         /// Gets the predefined categories and their sub-categories.
         /// </summary>
-        public void FetchCategories()
+        public void GetCategories(Action<CategoryResponse> response)
         {
-            var categoriesRequest = new CategoriesRequest();
-            HttpWebRequest req = (HttpWebRequest)HttpWebRequest.Create(categoriesRequest.GetUrl());
-            DoRequest<CheckInResponseContainer, CheckInResponse>(req, x => x.Response);
+            var catRequest = new CategoryRequest();
+            ProcessRequestAsync<CategoryResponse>(httpRequest.Create(catRequest.GetUrl()), response);
         }
-
 
         #region Private methods
 
-        private void DoRequest<T>(HttpWebRequest req) where T : ResponseObject
+        private void ProcessRequestAsync<T>(HttpWebRequest req, Action<T> action) where T : ResponseObject
         {
-            DoRequest<T, T>(req, (x) => x);
+            ProcessRequestAsync<T, T>(req, (x) => x, action);
         }
 
-        private void DoRequest<T, TRet>(HttpWebRequest req, Func<T, TRet> func) where T : ResponseObject where TRet : ResponseObject
+        private void ProcessRequestAsync<T, TRet>(HttpWebRequest req, Func<T, TRet> func, Action<TRet> action)
+            where T : ResponseObject
+            where TRet : ResponseObject
         {
-            T obj = Activator.CreateInstance<T>();
-
             var resetEvent = new AutoResetEvent(false);
+
+            T obj = Activator.CreateInstance<T>();
           
-            req.BeginGetResponse(delegate(IAsyncResult a)
+            httpRequest.BeginGetResponse(req, delegate(IAsyncResult result)
             {
                 try
                 {
-                    string responseText = GetResponseText(req.EndGetResponse(a));
+                    string responseText = httpRequest.GetResponse(req, result);
 
                     obj = ProcessResponse<T>(responseText);
                     TRet ret = func(obj);
@@ -180,13 +202,13 @@ namespace Squirrel
                         throw new FourSquareException(ret.Error);
                     }
 
-                    RaiseEvent(ret);
+                    action(ret);
                 }
                 catch (Exception ex)
                 {
                     exception = ex;
                 }
-                ((AutoResetEvent)a.AsyncState).Set();
+                ((AutoResetEvent)result.AsyncState).Set();
 
             }, resetEvent);
 
@@ -206,10 +228,9 @@ namespace Squirrel
         private void AuthorizeRequest(HttpWebRequest req, string username, string password)
         {
             string enHeader = Convert.ToBase64String(Encoding.UTF8.GetBytes(string.Format("{0}:{1}", username, password)));
-            req.Headers["Authorization"] = string.Format("Basic {0}", enHeader);
 
+            req.Headers["Authorization"] = string.Format("Basic {0}", enHeader);
             req.Credentials = new NetworkCredential(username, password);
-            req.UserAgent = "Maven:0.5.0 Guid/" + Guid.NewGuid().ToString("N");
         }
 
         private T ProcessResponse<T>(string responseString) where T : ResponseObject
@@ -218,7 +239,7 @@ namespace Squirrel
 
             var serializer = new JsonSerializer
             {
-                NullValueHandling = NullValueHandling.Ignore,
+                NullValueHandling = NullValueHandling.Include,
                 ObjectCreationHandling = ObjectCreationHandling.Replace,
                 ReferenceLoopHandling = ReferenceLoopHandling.Ignore,
                 MissingMemberHandling = MissingMemberHandling.Ignore,
@@ -233,35 +254,14 @@ namespace Squirrel
             return obj;
         }
 
-        private string GetResponseText(WebResponse response)
+        private bool HasCredientials()
         {
-            string responseText;
-
-            using (Stream stream = response.GetResponseStream())
-            {
-                using (StreamReader reader = new StreamReader(stream))
-                {
-                    responseText = reader.ReadToEnd();
-                }
-            }
-
-            return responseText;
-        }
-
-
-        private void RaiseEvent(IResponse response)
-        {
-            EventHandler<FourSquareEventArgs> handler = OnResponseReceived;
-
-            if (handler != null)
-            {
-                handler(this, new FourSquareEventArgs(response));
-            }
+            return string.IsNullOrEmpty(this.username) && !string.IsNullOrEmpty(this.password);
         }
 
         #endregion
 
-        public EventHandler<FourSquareEventArgs> OnResponseReceived;
+        private IHttpRequestProxy httpRequest;
 
         private bool async;
         private string username;

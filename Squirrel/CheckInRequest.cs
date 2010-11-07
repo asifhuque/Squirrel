@@ -7,7 +7,7 @@ namespace Squirrel
     /// Defines the check-in request.
     /// </summary>
     [RequestMethod("checkin.json")]
-    public class CheckInRequest : IRequestUrl
+    public class CheckInRequest : IUrlProcessor
     {
         /// <summary>
         /// Gets or sets if the check-in should be pushed to twitter.
@@ -82,7 +82,7 @@ namespace Squirrel
                 throw new FourSquareException("Shout text must be within 140 charecters");
             }
             
-            return UrlBuilder.GetUrl(this);
+            return UrlProcessorFactory.Process(this);
         }
 
         #endregion
