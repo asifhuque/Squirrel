@@ -41,12 +41,16 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AsynchronousAttribute.cs" />
     <Compile Include="BaseFixture.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="FakeAsyncResult.cs" />
     <Compile Include="FakeHttpRequestProxy.cs" />
     <Compile Include="FourSquareClientTest.cs" />
-    <Compile Include="Integration\VenueTests.cs" />
+    <Compile Include="Helper.cs" />
+    <Compile Include="Integration\AuthorizationTest.cs" />
+    <Compile Include="Integration\CategoryTest.cs" />
+    <Compile Include="Integration\FindVenueTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VenueFixture.cs" />
   </ItemGroup>

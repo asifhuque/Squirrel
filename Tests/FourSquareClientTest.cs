@@ -1,44 +1,23 @@
-﻿using NUnit.Framework;
-using System.Linq;
+﻿using System.Linq;
+
+#if SILVERLIGHT
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using TestFixture = Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute;
+using Test = Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute;
+#else
+using NUnit.Framework;
+#endif
 
 namespace Squirrel.Tests
 {
     [TestFixture]
-    public class FourSquareClientTest
+    public class FourSquareClientTest : BaseFixture
     {
-        [Test]
-        public void ShouldAssertUserForValidCredentials()
-        {
-            FourSquareContext context = new FourSquareContext(username, password, false);
-
-            context.GetCurrentUser(delegate(UserResponse response)
-            {
-                Assert.IsTrue(response.User.Id > 0);
-            });
-        }
-
-        [Test]
-        public void ShouldGetUserForUserId()
-        {
-            FourSquareContext context = new FourSquareContext(username, password, false);
-
-            int userId = 33;
-
-            bool badges = true;
-            bool mayor = true;
-
-            context.GetUser(userId, badges, mayor, delegate(UserResponse response)
-            {
-                Assert.IsTrue(response.User.Id > 0);
-                Assert.IsTrue(response.User.Badges.Count > 0);
-            });
-        }
-
-        [Test]
+        [Test, Ignore]
         public void ShouldAssertCheckinForLatLongAndVenueName()
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
-        
+
             var request = new CheckInRequest
             {
                 Venue = "Barista",
@@ -52,8 +31,9 @@ namespace Squirrel.Tests
                 Assert.IsTrue(response.Id > 0);
             });
         }
-
-        [Test]
+        
+        
+        [Test, Ignore]
         public void ShouldAssertCheckinForVenueId()
         {
             FourSquareContext context = new FourSquareContext(username, password, false);
@@ -65,26 +45,7 @@ namespace Squirrel.Tests
                 Assert.IsTrue(response.Id > 0);
             });
         }
-        
-        [Test]
-        public void ShouldAssertHierarchalCategories()
-        {
-            var context = new FourSquareContext(false);
-
-            context.GetCategories(delegate(CategoryResponse response)
-            {
-                var categories = response.Categories;
-
-                var category = categories.First();
-
-                Assert.IsNotEmpty(category.FullPathName);
-                Assert.IsNotEmpty(category.NodeName);
-                Assert.IsNotEmpty(category.IconUrl);
-
-                Assert.IsTrue(category.SubCategories.First().Id > 0);
-            });
-        }
-
+      
         private string username = Constants.Username;
         private string password = Constants.Password;
     }

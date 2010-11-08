@@ -1,32 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Reflection;
-using System.IO;
-
+﻿
 namespace Squirrel.Tests
 {
-    public class BaseFixture 
+    public partial class BaseFixture
     {
-        protected const string BaseUrl = "http://api.foursquare.com/v1/";
+        protected const bool async = false;
 
-        protected string ReadResponseFile(string fileName)
+        public void EnqueueTestComplete()
         {
-            Assembly assembly = Assembly.GetExecutingAssembly();
-            
-            using (Stream stream = assembly.GetManifestResourceStream("Squirrel.Tests.Responses." + fileName))
-            {
-                return new StreamReader(stream).ReadToEnd();
-            }
-        }
 
-
-        protected FakeHttpRequestProxy GetFakeRequest(string method)
-        {
-            var responseString = ReadResponseFile(method + ".json");
-            var fakeRequest = new FakeHttpRequestProxy(responseString);
-            return fakeRequest;
         }
     }
 }

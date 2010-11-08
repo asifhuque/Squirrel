@@ -3,12 +3,13 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using TestFixture = Microsoft.VisualStudio.TestTools.UnitTesting.TestClassAttribute;
 using Test = Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute;
-using Microsoft.Silverlight.Testing;
 #else
 using NUnit.Framework;
 
 #endif
 
+using System.Reflection;
+using System.IO;
 
 namespace Squirrel.Tests
 {
@@ -74,7 +75,7 @@ namespace Squirrel.Tests
         [Test]
         public void ShouldAssertVenuesResponseAsExpected()
         {
-            var fakeRequest = Helper.CreateFakeProxy("venues");
+            var fakeRequest = GetFakeRequest("venues");
             var context = new FourSquareContext(fakeRequest , false);
 
             context.FindVenues(20.10, 20.50, delegate(VenuesResponse response){
@@ -94,7 +95,7 @@ namespace Squirrel.Tests
         [Test]
         public void ShouldAssertVenueResponseAsExpected()
         {
-            var fakeRequest = Helper.CreateFakeProxy("venue");
+            var fakeRequest = GetFakeRequest("venue");
             var context = new FourSquareContext(fakeRequest, false);
 
             context.GetVenue(0, delegate(VenueResponse response){
@@ -106,6 +107,24 @@ namespace Squirrel.Tests
                 Assert.IsNotNull(response.Venue.Tips[0].CreatedOn);
                 Assert.AreNotEqual(0, response.Venue.Tips[0].Id);
             });
+        }
+
+        protected string ReadResponseFile(string fileName)
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+
+            using (Stream stream = assembly.GetManifestResourceStream("Squirrel.Tests.Responses." + fileName))
+            {
+                return new StreamReader(stream).ReadToEnd();
+            }
+        }
+
+
+        protected FakeHttpRequestProxy GetFakeRequest(string method)
+        {
+            var responseString = ReadResponseFile(method + ".json");
+            var fakeRequest = new FakeHttpRequestProxy(responseString);
+            return fakeRequest;
         }
     }
 }
