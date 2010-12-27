@@ -232,7 +232,6 @@ namespace Squirrel.Domain
         }
 
         private string name;
-        private PrimaryCategory category;
         private string address;
         private string crossstreet;
         private string city;
@@ -246,6 +245,7 @@ namespace Squirrel.Domain
         private string twitter;
         private string distance;
 
+        private PrimaryCategory category = new PrimaryCategory { IconUrl = "http://foursquare.com/img/categories/none.png" };
         private IList<Special> specials = new List<Special>();
         private IList<Tip> tips = new List<Tip>();
 

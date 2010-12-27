@@ -5,6 +5,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squirrel", "Squirrel\Squirr
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squirrel.Tests", "Tests\Squirrel.Tests.csproj", "{7D93FA79-74A5-4C81-B700-043F7916BD1E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squirrel.Phone", "Squirrel\Squirrel.Phone.csproj", "{13652113-3064-433F-A21F-11F8F49FF33C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -19,6 +21,10 @@ Global
 		{7D93FA79-74A5-4C81-B700-043F7916BD1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7D93FA79-74A5-4C81-B700-043F7916BD1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7D93FA79-74A5-4C81-B700-043F7916BD1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13652113-3064-433F-A21F-11F8F49FF33C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13652113-3064-433F-A21F-11F8F49FF33C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13652113-3064-433F-A21F-11F8F49FF33C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13652113-3064-433F-A21F-11F8F49FF33C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

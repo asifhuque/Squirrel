@@ -6,8 +6,13 @@ using Test = Microsoft.VisualStudio.TestTools.UnitTesting.TestMethodAttribute;
 using Microsoft.Silverlight.Testing;
 #else
 using NUnit.Framework;
+using Squirrel.Domain;
+using System;
 
 #endif
+
+using Squirrel.Proxy;
+using Squirrel.Domain;
 
 
 namespace Squirrel.Tests
@@ -28,9 +33,9 @@ namespace Squirrel.Tests
                 Longitude = 21.12
             };
 
-            string actualUrl = request.GetUrl();
+            var req = request.Create(new HttpRequestProxy());
 
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(expectedUrl, req.RequestUri.ToString());
         }
 
         [Test]
@@ -38,14 +43,14 @@ namespace Squirrel.Tests
         {
             string expectedUrl = string.Concat(Constants.BaseUrl, "venue.json?vid=10");
 
-            VenueRequest request = new VenueRequest
+             var request = new VenueRequest
             {
-                Id = 10
+                VenueId = 10
             };
 
-            string actualUrl = request.GetUrl();
+            var actualUrl = request.Create(new HttpRequestProxy());
 
-            Assert.AreEqual(expectedUrl, actualUrl);
+            Assert.AreEqual(expectedUrl, actualUrl.RequestUri.ToString());
         }
 
         [Test]
@@ -53,22 +58,23 @@ namespace Squirrel.Tests
         {
             var request = new VenuesRequest { Limit = 100 };
 
-#if SILVERLIGHT
-
+            #if SILVERLIGHT
+                
             try
             {
-                request.GetUrl();
+                request.Create(new HttpRequestProxy());
                 Assert.Fail();
             }
-            catch(FourSquareException ex)
+            catch(FourSquareException)
             {
+
             }
 
-#else
+            #else
 
-            Assert.Throws<FourSquareException>(() => request.GetUrl());
-#endif
-
+            Assert.Throws<FourSquareException>(() => request.Create(new HttpRequestProxy()));
+            
+            #endif
         }
 
         [Test]
@@ -77,18 +83,18 @@ namespace Squirrel.Tests
             var fakeRequest = Helper.CreateFakeProxy("venues");
             var context = new FourSquareContext(fakeRequest , false);
 
-            context.FindVenues(20.10, 20.50, delegate(VenuesResponse response){
-               Assert.IsTrue(response.Groups.Count == 2);
-               Assert.IsTrue(response.Groups[0].Venues.Count == 2);
-               Assert.IsTrue(response.Groups[1].Venues.Count == 1);
+            var result = context.FindVenues(20.10, 20.50);
 
-               Assert.AreEqual(response.Groups[0].Venues[0].Specials.Count, 1);
-               Assert.AreEqual(response.Groups[0].Venues[0].Specials[0].Type, SpecialType.Frequency);
-           
-               Assert.AreEqual(response.Groups[0].Venues[1].Specials.Count, 1);
-               Assert.AreEqual(response.Groups[0].Venues[1].Specials[0].Type, SpecialType.Frequency);
-            });
-        }
+            Assert.IsTrue(result.Groups.Count == 2);
+            Assert.IsTrue(result.Groups[0].Venues.Count == 2);
+            Assert.IsTrue(result.Groups[1].Venues.Count == 1);
+
+            Assert.AreEqual(result.Groups[0].Venues[0].Specials.Count, 1);
+            Assert.AreEqual(result.Groups[0].Venues[0].Specials[0].Type, SpecialType.Frequency);
+
+            Assert.AreEqual(result.Groups[0].Venues[1].Specials.Count, 1);
+            Assert.AreEqual(result.Groups[0].Venues[1].Specials[0].Type, SpecialType.Frequency);
+         }
 
 
         [Test]
@@ -97,15 +103,30 @@ namespace Squirrel.Tests
             var fakeRequest = Helper.CreateFakeProxy("venue");
             var context = new FourSquareContext(fakeRequest, false);
 
-            context.GetVenue(0, delegate(VenueResponse response){
-                Assert.AreNotEqual(0, response.Venue.Id);
-                Assert.AreEqual(42, response.Venue.Tips.Count);
-                Assert.AreEqual(2, response.Venue.Specials.Count);
-               
-                Assert.IsNotNull(response.Venue.Tips[0].User);
-                Assert.IsNotNull(response.Venue.Tips[0].CreatedOn);
-                Assert.AreNotEqual(0, response.Venue.Tips[0].Id);
-            });
+            var result = context.GetVenue(0);
+
+            Assert.AreNotEqual(0, result.Venue.Id);
+            Assert.AreEqual(42, result.Venue.Tips.Count);
+            Assert.AreEqual(2, result.Venue.Specials.Count);
+            Assert.IsNotNull(result.Venue.Tips[0].User);
+            Assert.IsNotNull(result.Venue.Tips[0].CreatedOn);
+            Assert.AreNotEqual(0, result.Venue.Tips[0].Id);
+        }
+
+        [Test]
+        public void ShouldReturnDefaultCategoryForNone()
+        {
+            var fakeRequest = Helper.CreateFakeProxy("venues");
+            var context = new FourSquareContext(fakeRequest, false);
+
+            string expected = "http://foursquare.com/img/categories/none.png";
+
+            var result = context.FindVenues(0.0, 0.0);
+
+            var category = result.Groups[0].Venues[0].Category;
+
+            Assert.IsNotNull(category);
+            Assert.AreEqual(expected, category.IconUrl);
         }
     }
 }

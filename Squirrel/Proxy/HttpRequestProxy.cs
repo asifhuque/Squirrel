@@ -3,7 +3,7 @@ using System.Net;
 using System;
 using System.IO;
 
-namespace Squirrel
+namespace Squirrel.Proxy
 {
     internal class HttpRequestProxy : IHttpRequestProxy
     {
@@ -37,7 +37,7 @@ namespace Squirrel
         /// </summary>
         /// <param name="request">Http request object</param>
         /// <param name="callback">Target callback</param>
-        /// <param name="statee">Target object instance</param>
+        /// <param name="state">Target object instance</param>
         public IAsyncResult BeginGetResponse(HttpWebRequest request, AsyncCallback callback, object state)
         {
             return request.BeginGetResponse(callback, state);

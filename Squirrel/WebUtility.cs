@@ -1,24 +1,32 @@
 ﻿using System;
 using System.Reflection;
 using Squirrel.Attributes;
+using System.Collections.Generic;
+using System.Text;
 
 namespace Squirrel
 {
-    internal class UrlProcessorFactory
+    internal class WebUtility
     {
-        /// <summary>
-        /// Gets the REST url constructed from a specific request object.
-        /// </summary>
-        /// <param name="args">Request object</param>
-        /// <returns>Complete request url.</returns>
-        public static string Process(object target)
+        internal WebUtility(object target)
+        {
+            this.target = target;
+        }
+
+        public string GetBaseUrl()
         {
             Type targetType = target.GetType();
-            string url = GetUrlFromType(targetType);
+            return GetUrlFromType(targetType);
+        }
 
-            url = string.Concat(url, "?");
+        public IList<NameValuePair> GetParameters()
+        {
+            Type targetType = target.GetType();
+            IList<NameValuePair> list = new List<NameValuePair>();
 
-            foreach (PropertyInfo propertyInfo in targetType.GetProperties())
+            var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+
+            foreach (var propertyInfo in targetType.GetProperties(flags))
             {
                 object value = propertyInfo.GetValue(target, null);
 
@@ -28,7 +36,7 @@ namespace Squirrel
 
                     if (attributes.Length == 1)
                     {
-                        RequestPropertyAttribute requestAttribute = attributes[0] as RequestPropertyAttribute;
+                        var requestAttribute = attributes[0] as RequestPropertyAttribute;
 
                         // convert boolean to int.
                         if (propertyInfo.PropertyType == typeof(bool))
@@ -36,19 +44,32 @@ namespace Squirrel
                             value = Convert.ToInt32(value);
                         }
 
-                        url += string.Concat(requestAttribute.ElementName, "=",  value.ToString().Replace(' ' , '+'));
-                        url += '&';
+                        list.Add(new NameValuePair { Name = requestAttribute.ElementName, Value = Encode(value.ToString()) });
                     }
                 }
 
             }
 
-            if (url.IndexOf('&') >= 0 || url[url.Length -1] == '?')
+            return list;
+        }
+
+        static string Encode(string value)
+        {
+            var result = new StringBuilder();
+
+            foreach (char symbol in value)
             {
-                url = url.Substring(0, url.Length - 1);
+                if (unreservedChars.IndexOf(symbol) != -1)
+                {
+                    result.Append(symbol);
+                }
+                else
+                {
+                    result.Append('%' + String.Format("{0:X2}", (int)symbol));
+                }
             }
 
-            return url;
+            return result.ToString();
         }
 
         /// <summary>
@@ -83,5 +104,8 @@ namespace Squirrel
             }
             return url;
         }
+
+        private object target;
+        private const string unreservedChars = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-_.~";
     }
 }

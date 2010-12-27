@@ -40,20 +40,23 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstraction\Request.cs" />
     <Compile Include="Domain\Special.cs" />
     <Compile Include="Domain\Tip.cs" />
-    <Compile Include="SpecialType.cs" />
+    <Compile Include="FourSquareContext.cs" />
+    <Compile Include="FourSquareEventArgs.cs" />
+    <Compile Include="AsyncResponse.cs" />
+    <Compile Include="NameValuePair.cs" />
+    <Compile Include="Domain\SpecialType.cs" />
     <Compile Include="HttpRequestMethod.cs" />
     <Compile Include="Abstraction\IHttpRequestProxy.cs" />
-    <Compile Include="Abstraction\IUrlProcessor.cs" />
     <Compile Include="Abstraction\IDomainResponse.cs" />
     <Compile Include="Attributes\RequestMethodAttribute.cs" />
     <Compile Include="Attributes\RequestPropertyAttribute.cs" />
-    <Compile Include="CategoryRequest.cs" />
-    <Compile Include="CategoryResponse.cs" />
-    <Compile Include="CheckInRequest.cs" />
-    <Compile Include="CheckInResponse.cs" />
-    <Compile Include="CheckInWrapper.cs" />
+    <Compile Include="Requests\CategoryRequest.cs" />
+    <Compile Include="Responses\CategoryResponse.cs" />
+    <Compile Include="Requests\CheckInRequest.cs" />
+    <Compile Include="Responses\CheckInResponse.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="Domain\Badge.cs" />
     <Compile Include="Domain\Category.cs" />
@@ -62,11 +65,11 @@
     <Compile Include="Domain\Mayor.cs" />
     <Compile Include="Domain\Score.cs" />
     <Compile Include="Domain\Stats.cs" />
-    <Compile Include="FourSquareContext.cs" />
+    <Compile Include="Responses\AsyncWebResponse.cs" />
     <Compile Include="FourSquareException.cs" />
-    <Compile Include="HttpRequestProxy.cs" />
-    <Compile Include="UserRequest.cs" />
-    <Compile Include="UserResponse.cs" />
+    <Compile Include="Proxy\HttpRequestProxy.cs" />
+    <Compile Include="Requests\UserRequest.cs" />
+    <Compile Include="Responses\UserResponse.cs" />
     <Compile Include="Domain\PrimaryCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Domain\Base\ResponseObject.cs" />
@@ -75,11 +78,11 @@
     <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\Venue.cs" />
     <Compile Include="Domain\VenueGroup.cs" />
-    <Compile Include="UrlProcessorFactory.cs" />
-    <Compile Include="VenueRequest.cs" />
-    <Compile Include="VenueResponse.cs" />
-    <Compile Include="VenuesRequest.cs" />
-    <Compile Include="VenuesResponse.cs" />
+    <Compile Include="WebUtility.cs" />
+    <Compile Include="Requests\VenueRequest.cs" />
+    <Compile Include="Responses\VenueResponse.cs" />
+    <Compile Include="Requests\VenuesRequest.cs" />
+    <Compile Include="Responses\VenueGroupResponse.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

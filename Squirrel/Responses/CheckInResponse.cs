@@ -8,6 +8,20 @@ namespace Squirrel
 {
     public class CheckInResponse : ResponseObject
     {
+        [JsonProperty("checkin")]
+        public CheckInResponse Response
+        {
+            get
+            {
+                return response;
+            }
+            set
+            {
+                response = value;
+                OnPropertyChanged("Response");
+            }
+        }
+
         /// <summary>
         ///  Get or sets id for the check-in
         /// </summary>
@@ -114,5 +128,7 @@ namespace Squirrel
 
         private IList<Badge> badges = new List<Badge>();
         private IList<Score> scoring = new List<Score>();
+
+        private CheckInResponse response;
     }
 }

@@ -4,23 +4,27 @@ using System.Linq;
 using System.Text;
 using Squirrel.Abstraction;
 using Squirrel.Attributes;
+using System.Net;
 
 namespace Squirrel
 {
+    /// <summary>
+    /// Represents single venue request.
+    /// </summary>
     [RequestMethod("venue.json")]
-    public class VenueRequest : IUrlProcessor
+    public class VenueRequest : Request
     {
         /// <summary>
         /// Gets or sets Id for the venue.
         /// </summary>
         [RequestProperty("vid")]
-        public int Id { get; set; }
+        public int VenueId { get; set; }
 
         #region IUrlProcessor Members
 
-        public string GetUrl()
+        public HttpWebRequest Create(IHttpRequestProxy proxy)
         {
-            return UrlProcessorFactory.Process(this);
+            return Create(this, proxy);
         }
 
         #endregion

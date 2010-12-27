@@ -1,10 +1,11 @@
 ﻿using Squirrel.Attributes;
 using Squirrel.Abstraction;
+using System.Net;
 
 namespace Squirrel
 {
     [RequestMethod("venues.json")]
-    public class VenuesRequest : IUrlProcessor
+    public class VenuesRequest : Request
     {
         internal VenuesRequest()
         {
@@ -38,14 +39,14 @@ namespace Squirrel
 
         #region IRequestUrl Members
 
-        public string GetUrl()
+        public HttpWebRequest Create(IHttpRequestProxy proxy)
         {
             if (Limit > 50)
             {
                 throw new FourSquareException("Default limit is 10 and maximum 50 is allowed.");
             }
 
-            return UrlProcessorFactory.Process(this);
+            return Create(this, proxy);
         }
 
         #endregion

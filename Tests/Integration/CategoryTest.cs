@@ -20,13 +20,18 @@ namespace Squirrel.Tests.Integration
         {
             var context = new FourSquareContext(async);
 
-            context.GetCategories(delegate(CategoryResponse response)
+            var result = context.BeginGetCategories();
+                
+            result.OnCompleted += (sender, args) =>
             {
+                var response = args.Data;
                 Assert.IsTrue(response.Categories.Count > 0);
                 Assert.IsTrue(response.Categories.First().SubCategories.Count > 0);
 
                 EnqueueTestComplete();
-            });
+            };
+
+            context.EndGetCategories(result);
         }
     }
 }

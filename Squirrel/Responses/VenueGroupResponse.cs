@@ -5,7 +5,7 @@ using Squirrel.Domain.Base;
 
 namespace Squirrel
 {
-    public class VenuesResponse : ResponseObject
+    public class VenueGroupReponse : ResponseObject
     {
         /// <summary>
         ///  Get or sets id of the user

@@ -1,11 +1,12 @@
 ﻿
 using Squirrel.Abstraction;
 using Squirrel.Attributes;
+using System.Net;
 
 namespace Squirrel
 {
     [RequestMethod("user.json")]
-    public class UserRequest : IUrlProcessor
+    public class UserRequest : Request
     {
         /// <summary>
         /// Gets or sets the user Id
@@ -36,9 +37,9 @@ namespace Squirrel
 
         #region IRequest Members
 
-        public string GetUrl()
+        public HttpWebRequest Create(IHttpRequestProxy proxy)
         {
-            return UrlProcessorFactory.Process(this);
+            return Create(this, proxy);
         }
 
         #endregion

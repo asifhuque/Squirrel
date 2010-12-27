@@ -16,13 +16,19 @@ namespace Squirrel.Tests.Integration
         [Test, Asynchronous]
         public void ShouldAssertUserForValidCredentials()
         {
-            FourSquareContext context = new FourSquareContext(username, password, async);
+            var context = new FourSquareContext(username, password, async);
 
-            context.GetCurrentUser(delegate(UserResponse response){
-                Assert.IsTrue(response.User.Id > 0);
+            var result = context.BeginGetUser();
 
+            result.OnCompleted += (sender, args) =>
+            {
+                var data = args.Data;
+                Assert.IsTrue(data.User.Id > 0);
                 EnqueueTestComplete();
-            });
+            };
+
+
+            context.EndGetUser(result);
         }
 
         [Test, Asynchronous]
@@ -35,12 +41,17 @@ namespace Squirrel.Tests.Integration
             bool badges = false;
             bool mayor = false;
 
-            context.GetUser(userId, badges, mayor, delegate(UserResponse response)
-            {
-                Assert.AreEqual(response.User.Id, 33);
+            var result = context.BeginGetUser(userId, true);
 
+            
+            result.OnCompleted += (sender, args) =>
+            {
+                var data = args.Data;
+                Assert.AreEqual(data.User.Id, 33);
                 EnqueueTestComplete();
-            });
+            };
+
+            context.EndGetUser(result);
         }
 
         private string username = Constants.Username;

@@ -1,7 +1,7 @@
 using System.Reflection;
 using System;
 
-namespace Squirrel
+namespace Squirrel.Domain
 {
     public enum SpecialType
     {

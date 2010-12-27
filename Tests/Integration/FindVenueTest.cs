@@ -16,15 +16,18 @@ namespace Squirrel.Tests.Integration
         [Test, Asynchronous]
         public void ShouldBeAbleToDoFindVenuesForASpecificLatLong()
         {
-            FourSquareContext context = new FourSquareContext(async);
+            var context = new FourSquareContext(async);
+            var result = context.BeginFindVenues(23.77, 90.41);
 
-            context.FindVenues(23.77, 90.41, delegate(VenuesResponse response)
+            result.OnCompleted += (sender, args) =>
             {
-                Assert.AreEqual(response.Groups[0].Venues[0].Latitude.ToString("0.00"), "23.77");
-                Assert.AreEqual(response.Groups[0].Venues[0].Longitude.ToString("0.00"), "90.41");
-
+                var data = args.Data;
+                Assert.AreEqual(data.Groups[0].Venues[0].Latitude.ToString("0.00"), "23.77");
+                Assert.AreEqual(data.Groups[0].Venues[0].Longitude.ToString("0.00"), "90.41");
                 EnqueueTestComplete();
-            });
+            };
+
+            context.EndFindVenues(result);
         }
 
         [Test, Asynchronous]
@@ -34,12 +37,16 @@ namespace Squirrel.Tests.Integration
 
             int expected = 41710;
 
-            context.GetVenue(expected, delegate(VenueResponse response)
-            {
-                Assert.AreEqual(response.Venue.Id, expected);
+            var response = context.BeginGetVenue(expected);
 
+            response.OnCompleted += (sender, args) =>
+            {
+                var result = args.Data;
+                Assert.AreEqual(result.Venue.Id, expected);
                 EnqueueTestComplete();
-            });
+            };
+
+            context.EndGetVenue(response);
         }
     }
 }

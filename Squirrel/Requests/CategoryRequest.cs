@@ -1,5 +1,6 @@
 ﻿using Squirrel.Abstraction;
 using Squirrel.Attributes;
+using System.Net;
 
 namespace Squirrel
 {
@@ -7,13 +8,13 @@ namespace Squirrel
     /// Defines the categories request.
     /// </summary>
     [RequestMethod("categories.json")]
-    public class CategoryRequest : IUrlProcessor
+    public class CategoryRequest : Request
     {
         #region IRequestUrl Members
 
-        public string GetUrl()
+        public HttpWebRequest Create(IHttpRequestProxy proxy)
         {
-            return UrlProcessorFactory.Process(this);
+            return Create(this, proxy);
         }
 
         #endregion
