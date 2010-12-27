@@ -328,8 +328,14 @@ namespace Squirrel
                     {
                         exception = ex;
                     }
-                    ((AutoResetEvent)result.AsyncState).Set();
+                    
+                    if (!async)
+                    {
+                        ((AutoResetEvent)result.AsyncState).Set();
+                    }
+
                 }, resetEvent);
+               
                 if (!async)
                 {
                     resetEvent.WaitOne();

@@ -42,7 +42,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json.Phone">
+    <Reference Include="Newtonsoft.Json.Phone, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\Silverlight\Newtonsoft.Json.Phone.dll</HintPath>
     </Reference>
     <Reference Include="system" />

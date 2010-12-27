@@ -7,8 +7,8 @@
         public static string Username = System.Configuration.ConfigurationSettings.AppSettings["username"];
         public static string Password = System.Configuration.ConfigurationSettings.AppSettings["password"];
 #else
-        public static string Username = "username";
-        public static string Password = "password";
+        public static string Username = "mehfuz@gmail.com";
+        public static string Password = "networldFour1#";
 
 #endif
 
