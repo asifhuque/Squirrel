@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Net;
+using Squirrel.Attributes;
 
 namespace Squirrel.Abstraction
 {
@@ -8,6 +9,13 @@ namespace Squirrel.Abstraction
     /// </summary>
     public abstract class Request
     {
+        /// <summary>
+        /// Creates the web request for a target proxy.
+        /// </summary>
+        /// <param name="proxy">Target proxy</param>
+        /// <returns><see cref="HttpWebRequest"/> instance</returns>
+        public abstract HttpWebRequest Create(IHttpRequestProxy proxy);
+
         /// <summary>
         /// Creates the web request target request.
         /// </summary>
@@ -27,6 +35,25 @@ namespace Squirrel.Abstraction
                 url = url.Substring(0, url.Length - 1);
             
             return proxy.Create(url);
+        }
+
+
+        /// <summary>
+        /// Gets the client id.
+        /// </summary>
+        [RequestProperty("client_id")]
+        public string Key
+        {
+            get { return Client.Key; }
+        }
+
+        /// <summary>
+        /// Gets the client secret
+        /// </summary>
+        [RequestProperty("client_secret")]
+        public string Secret
+        {
+            get { return Client.Secret; }
         }
     }
 }

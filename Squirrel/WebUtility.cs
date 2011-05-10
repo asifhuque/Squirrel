@@ -24,7 +24,7 @@ namespace Squirrel
             Type targetType = target.GetType();
             IList<NameValuePair> list = new List<NameValuePair>();
 
-            var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance | BindingFlags.DeclaredOnly;
+            var flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance;
 
             foreach (var propertyInfo in targetType.GetProperties(flags))
             {
@@ -32,7 +32,7 @@ namespace Squirrel
 
                 if (value != null && !value.Equals(GetDefautlValue(propertyInfo.PropertyType)))
                 {
-                    object[] attributes = propertyInfo.GetCustomAttributes(typeof(RequestPropertyAttribute), false);
+                    object[] attributes = propertyInfo.GetCustomAttributes(typeof(RequestPropertyAttribute), true);
 
                     if (attributes.Length == 1)
                     {
@@ -40,11 +40,12 @@ namespace Squirrel
 
                         // convert boolean to int.
                         if (propertyInfo.PropertyType == typeof(bool))
-                        {
                             value = Convert.ToInt32(value);
-                        }
 
-                        list.Add(new NameValuePair { Name = requestAttribute.ElementName, Value = Encode(value.ToString()) });
+                        if (requestAttribute.Encode)
+                            value = Encode(value.ToString());
+
+                        list.Add(new NameValuePair { Name = requestAttribute.ElementName, Value = value.ToString() });
                     }
                 }
 
@@ -100,9 +101,30 @@ namespace Squirrel
             if (methodAttribes.Length == 1)
             {
                 var requestMethodAttr = methodAttribes[0] as RequestMethodAttribute;
-                url = Constants.BaseUrl + requestMethodAttr.Method;
+                url = GetEndPointAddress(targetType) + requestMethodAttr.Method;
             }
             return url;
+        }
+
+        static string GetEndPointAddress(Type target)
+        {
+           var attribute =  GetAttribute<VersionAttribute>(target);
+
+            if (attribute != null && !attribute.IsLegacy)
+            {
+                return Constants.EndPoint_V2;
+            }
+            return Constants.EndPoint_V1;
+        }
+
+        static T GetAttribute<T>(Type targetType)
+        {
+            object[] methodAttribes = targetType.GetCustomAttributes(typeof(T), false);
+
+            if (methodAttribes.Length == 1)
+                return (T)methodAttribes[0];
+
+            return default(T);
         }
 
         private object target;

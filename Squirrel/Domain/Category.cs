@@ -6,66 +6,89 @@ namespace Squirrel.Domain
 {
     public class Category : ResponseObject
     {
+
         /// <summary>
-        /// Gets or sets the full path name of the category
+        ///  Get or sets name of the category
         /// </summary>
-        [JsonProperty("fullpathname")]
-        public string FullPathName
+        [JsonProperty("name")]
+        public string Name
         {
-            get { return fullPathName; }
+            get { return name; }
             set
             {
-                fullPathName = value;
-                OnPropertyChanged("FullPathName");
+                name = value;
+                OnPropertyChanged("Name");
+            }
+        }
+      
+        /// <summary>
+        /// Gets or sets the icon for the category
+        /// </summary>
+        [JsonProperty("icon")]
+        public string Icon
+        {
+            get { return icon; }
+            set
+            {
+                icon = value;
+                OnPropertyChanged("Icon");
             }
         }
 
         /// <summary>
-        /// Gets or sets the full path name of the category
+        /// Gets the 64x64 Icon
         /// </summary>
-        [JsonProperty("nodename")]
-        public string NodeName
+        public string BigIcon
         {
-            get { return nodeName; }
-            set
+            get
             {
-                nodeName = value;
-                OnPropertyChanged("NodeName");
+                if (!string.IsNullOrEmpty(icon))
+                {
+                    int ext = icon.IndexOf(".png");
+                    string main = icon.Substring(0, ext);
+
+                    main = string.Format("{0}_64.png", main);
+
+                    return main;
+                }
+                return icon;
             }
         }
+       
 
         /// <summary>
-        /// Gets or sets the full path name of the category
+        /// Gets or sets a value indicating if the it is a 
+        /// primary category.
         /// </summary>
-        [JsonProperty("iconurl")]
-        public string IconUrl
+        [JsonProperty("primary")]
+        public bool Primary
         {
-            get { return iconUrl; }
+            get { return primary; }
             set
             {
-                iconUrl = value;
-                OnPropertyChanged("IconUrl");
+                primary = value;
+                OnPropertyChanged("Primary");
             }
         }
 
         /// <summary>
         ///  Get or sets list of sub-categories
         /// </summary>
-        [JsonProperty("categories")]
-        public IList<Category> SubCategories
+        [JsonProperty("parents")]
+        public IList<string> Parents
         {
-            get { return subCategories; }
+            get { return parents; }
             set
             {
-                subCategories = value;
-                OnPropertyChanged("Categories");
+                parents = value;
+                OnPropertyChanged("Parents");
             }
         }
 
-        private IList<Category> subCategories = new List<Category>();
+        private IList<string> parents = new List<string>();
 
-        private string fullPathName;
-        private string nodeName;
-        private string iconUrl;
+        private string icon;
+        private string name;
+        private bool primary;
     }
 }

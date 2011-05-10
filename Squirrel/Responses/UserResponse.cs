@@ -1,5 +1,6 @@
 ﻿using Newtonsoft.Json;
 using Squirrel.Domain;
+using System;
 
 namespace Squirrel
 {
@@ -28,7 +29,7 @@ namespace Squirrel
         /// <returns></returns>
         public bool IsSuccess()
         {
-            return User.Id > 0;
+            return !string.IsNullOrEmpty(User.Id);
         }
 
         private User user;

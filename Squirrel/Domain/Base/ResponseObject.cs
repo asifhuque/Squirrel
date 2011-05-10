@@ -2,16 +2,17 @@
 using Newtonsoft.Json.Serialization;
 using Squirrel.Abstraction;
 using System.ComponentModel;
+using System;
 
 namespace Squirrel.Domain.Base
 {
-    public class ResponseObject : INotifyPropertyChanged, IDomainResponse
+    public abstract class ResponseObject : INotifyPropertyChanged, IResponseObject
     {
         /// <summary>
         ///  Get or sets id of the venue
         /// </summary>
         [JsonProperty("id")]
-        public int Id
+        public string Id
         {
             get { return id; }
             set
@@ -47,7 +48,7 @@ namespace Squirrel.Domain.Base
             if (handler != null) handler(this, e);
         }
 
-        private int id;
+        private string id;
         private string error;
     }
 }

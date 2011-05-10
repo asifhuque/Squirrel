@@ -15,23 +15,23 @@ namespace Squirrel.Tests.Integration
     [TestFixture]
     public class CategoryTest : BaseFixture
     {
-        [Test, Asynchronous]
-        public void ShouldAssertHierarchalCategories()
-        {
-            var context = new FourSquareContext(async);
+        //[Test, Asynchronous]
+        //public void ShouldAssertHierarchalCategories()
+        //{
+        //    var context = new FourSquareContext(async);
 
-            var result = context.BeginGetCategories();
+        //    var result = context.BeginGetCategories();
                 
-            result.OnCompleted += (sender, args) =>
-            {
-                var response = args.Data;
-                Assert.IsTrue(response.Categories.Count > 0);
-                Assert.IsTrue(response.Categories.First().SubCategories.Count > 0);
+        //    result.OnCompleted += (sender, args) =>
+        //    {
+        //        var response = args.Data;
+        //        Assert.IsTrue(response.Categories.Count > 0);
+        //        Assert.IsTrue(response.Categories.First().SubCategories.Count > 0);
 
-                EnqueueTestComplete();
-            };
+        //        EnqueueTestComplete();
+        //    };
 
-            context.EndGetCategories(result);
-        }
+        //    context.EndGetCategories(result);
+        //}
     }
 }

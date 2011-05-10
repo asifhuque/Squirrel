@@ -40,7 +40,12 @@
     <Reference Include="System.Core" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Abstraction\IResponseObject.cs" />
     <Compile Include="Abstraction\Request.cs" />
+    <Compile Include="Attributes\VersionAttribute.cs" />
+    <Compile Include="Client.cs" />
+    <Compile Include="Domain\Contact.cs" />
+    <Compile Include="Domain\Location.cs" />
     <Compile Include="Domain\Special.cs" />
     <Compile Include="Domain\Tip.cs" />
     <Compile Include="FourSquareContext.cs" />
@@ -50,7 +55,6 @@
     <Compile Include="Domain\SpecialType.cs" />
     <Compile Include="HttpRequestMethod.cs" />
     <Compile Include="Abstraction\IHttpRequestProxy.cs" />
-    <Compile Include="Abstraction\IDomainResponse.cs" />
     <Compile Include="Attributes\RequestMethodAttribute.cs" />
     <Compile Include="Attributes\RequestPropertyAttribute.cs" />
     <Compile Include="Requests\CategoryRequest.cs" />
@@ -69,6 +73,7 @@
     <Compile Include="FourSquareException.cs" />
     <Compile Include="Proxy\HttpRequestProxy.cs" />
     <Compile Include="Requests\UserRequest.cs" />
+    <Compile Include="Responses\FourSquareResponse.cs" />
     <Compile Include="Responses\UserResponse.cs" />
     <Compile Include="Domain\PrimaryCategory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -78,11 +83,11 @@
     <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\Venue.cs" />
     <Compile Include="Domain\VenueGroup.cs" />
+    <Compile Include="UrlBuilder.cs" />
     <Compile Include="WebUtility.cs" />
     <Compile Include="Requests\VenueRequest.cs" />
     <Compile Include="Responses\VenueResponse.cs" />
     <Compile Include="Requests\VenuesRequest.cs" />
-    <Compile Include="Responses\VenueGroupResponse.cs" />
   </ItemGroup>
   <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

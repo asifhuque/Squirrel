@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 using Squirrel.Domain.Base;
+using System.Linq;
 
 namespace Squirrel.Domain
 {
@@ -21,88 +22,60 @@ namespace Squirrel.Domain
         }
 
         /// <summary>
-        ///  Get or sets category of the venue
-        /// </summary>
-        [JsonProperty("primarycategory")]
-        public PrimaryCategory Category
-        {
-            get { return category; }
-            set
-            {
-                category = value;
-                OnPropertyChanged("Category");
-            }
-        }
-
-        /// <summary>
         ///  Get or sets address of the venue
         /// </summary>
-        [JsonProperty("address")]
-        public string Address
+        [JsonProperty("location")]
+        public Location Location
         {
-            get { return address; }
+            get { return location; }
             set
             {
-                address = value;
-                OnPropertyChanged("Address");
+                location = value;
+                OnPropertyChanged("Location");
             }
         }
 
         /// <summary>
-        ///  Get or sets cross street of the venue
+        /// Gets the primary category associated with the venue. If
+        /// nothing is specified then it will return none.png.
         /// </summary>
-        [JsonProperty("crossstreet")]
-        public string CrossStreet
+        public Category PrimaryCategory
         {
-            get { return crossstreet; }
+            get
+            {
+                if (primaryCategory == null)
+                {
+                    primaryCategory = categories.Where(x => x.Primary == true).FirstOrDefault();
+
+                    if (primaryCategory == null)
+                    {
+                        primaryCategory = new Category { Icon = "http://foursquare.com/img/categories/none.png" };
+                    }
+                }
+
+                return primaryCategory;
+            }
             set
             {
-                crossstreet = value;
-                OnPropertyChanged("CrossStreet");
+                // useful for setting design data.
+                primaryCategory = value;
             }
         }
 
         /// <summary>
-        ///  Get or sets city of the venue
+        ///  Get or sets contact of the venue
         /// </summary>
-        [JsonProperty("city")]
-        public string City
+        [JsonProperty("contact")]
+        public Contact Contact
         {
-            get { return city; }
+            get { return contact; }
             set
             {
-                city = value;
-                OnPropertyChanged("City");
+                contact = value;
+                OnPropertyChanged("Contact");
             }
         }
 
-        /// <summary>
-        ///  Get or sets state of the venue
-        /// </summary>
-        [JsonProperty("state")]
-        public string State
-        {
-            get { return state; }
-            set
-            {
-                state = value;
-                OnPropertyChanged("State");
-            }
-        }
-
-        /// <summary>
-        ///  Get or sets id of the venue
-        /// </summary>
-        [JsonProperty("zip")]
-        public string Zip
-        {
-            get { return zip; }
-            set
-            {
-                zip = value;
-                OnPropertyChanged("Zip");
-            }
-        }
 
         /// <summary>
         ///  Get or sets if the venue is verified.
@@ -115,34 +88,6 @@ namespace Squirrel.Domain
             {
                 verified = value;
                 OnPropertyChanged("Verified");
-            }
-        }
-
-        /// <summary>
-        ///  Get or sets latitude of the venue
-        /// </summary>
-        [JsonProperty("geolat")]
-        public double Latitude
-        {
-            get { return latitude; }
-            set
-            {
-                latitude = value;
-                OnPropertyChanged("Latitude");
-            }
-        }
-
-        /// <summary>
-        ///  Get or sets longitude of the venue
-        /// </summary>
-        [JsonProperty("geolong")]
-        public double Longitude
-        {
-            get { return longitude; }
-            set
-            {
-                longitude = value;
-                OnPropertyChanged("Longitude");
             }
         }
 
@@ -188,20 +133,20 @@ namespace Squirrel.Domain
             }
         }
 
-
         /// <summary>
-        ///  Get or sets phone number of the venue
+        ///  Get or sets the categories associated with the venue.
         /// </summary>
-        [JsonProperty("phone")]
-        public string Phone
+        [JsonProperty("categories")]
+        public IList<Category> Categories
         {
-            get { return phone; }
+            get { return categories; }
             set
             {
-                phone = value;
-                OnPropertyChanged("Phone");
+                categories = value;
+                OnPropertyChanged("Categories");
             }
         }
+    
 
         /// <summary>
         ///  Get or sets the twitter id of the venue
@@ -217,37 +162,18 @@ namespace Squirrel.Domain
             }
         }
 
-        /// <summary>
-        ///  Get or sets distance (Km) of the venue
-        /// </summary>
-        [JsonProperty("distance")]
-        public string Distance
-        {
-            get { return distance; }
-            set
-            {
-                distance = value;
-                OnPropertyChanged("Distance");
-            }
-        }
-
         private string name;
-        private string address;
-        private string crossstreet;
-        private string city;
-        private string state;
-        private string zip;
         private bool verified;
-        private double latitude;
-        private double longitude;
         private Stats stats;
-        private string phone;
         private string twitter;
-        private string distance;
+        private Contact contact;
 
-        private PrimaryCategory category = new PrimaryCategory { IconUrl = "http://foursquare.com/img/categories/none.png" };
         private IList<Special> specials = new List<Special>();
         private IList<Tip> tips = new List<Tip>();
+        private Location location = new Location();
+        
+        private IList<Category> categories = new List<Category>();
+        private Category primaryCategory;
 
     }
 }

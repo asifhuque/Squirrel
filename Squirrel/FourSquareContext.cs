@@ -7,52 +7,54 @@ using Newtonsoft.Json;
 using Squirrel.Abstraction;
 using Squirrel.Domain.Base;
 using Squirrel.Proxy;
+using Microsoft.Phone.Reactive;
 
 namespace Squirrel
 {
     /// <summary>
     /// Entry point class for interacting with foursquare.
     /// </summary>
-    public class FourSquareContext
+    public class FourSquareContext : IVenueContext
     {
-        public FourSquareContext(IHttpRequestProxy request, bool async)
+        /// <summary>
+        /// Initializes new instance of the <see cref="FourSquareContext"/> class.
+        /// </summary>
+        public FourSquareContext()
+            : this(new HttpRequestProxy())
+        {
+            // intentionally left blank.   
+        }
+
+        /// <summary>
+        /// Initializes new instance of the <see cref="FourSquareContext"/> class.
+        /// </summary>
+        /// <param name="request">Target request proxy.</param>
+        public FourSquareContext(IHttpRequestProxy request)
         {
             this.httpRequest = request;
-            this.async = async;
         }
 
-        public FourSquareContext()
-            : this(new HttpRequestProxy(), true)
-        {
-            // intentionally left blank.   
-        }
-
+        /// <summary>
+        /// Initializes new instance of the <see cref="FourSquareContext"/> class.
+        /// </summary>
+        /// <param name="username">Target username</param>
+        /// <param name="password">Target password</param>
         public FourSquareContext(string username, string password)
-            : this(username, password, true)
-        {
-            // intentionally left blank.   
-        }
-
-        public FourSquareContext(bool async)
-            : this(string.Empty, string.Empty, async)
-        {
-            // intentionally left blank.   
-        }
-
-        public FourSquareContext(string username, string password, bool async)
-            : this(new HttpRequestProxy(), async)
+            : this(new HttpRequestProxy())
         {
             this.username = username;
             this.password = password;
         }
 
         /// <summary>
-        /// Sets credential to current context.
+        /// Gets the current venue context.
         /// </summary>
-        public void SetCredentials(string username, string password)
+        public IVenueContext Venues
         {
-            this.username = username;
-            this.password = password;
+            get
+            {
+                return this as IVenueContext;
+            }
         }
 
         /// <summary>
@@ -73,57 +75,13 @@ namespace Squirrel
         }
 
         /// <summary>
-        /// Searches a group of venues for a specific location
-        /// </summary>
-        /// <param name="latitude">Lattitude</param>
-        /// <param name="longitude">Longitude</param>
-        public VenueGroupReponse FindVenues(double latitude, double longitude)
-        {
-            return FindVenues(string.Empty, latitude, longitude);
-        }
-
-        /// <summary>
         /// Searches a group of venues for a specific location and text
         /// </summary>
         /// <param name="latitude">Lattitude</param>
         /// <param name="longitude">Longitude</param>
-        public VenueGroupReponse FindVenues(string text, double latitude, double longitude)
+        IObservable<VenueResponse>  IVenueContext.Search(string text, double latitude, double longitude)
         {
-            this.async = false;
-            VenueGroupReponse result = null;
-
-            var response = this.BeginFindVenues(string.Empty, latitude, longitude);
-                
-            response.OnCompleted += (sender, args) =>
-            {
-                result = args.Data;
-            };
-
-
-            this.EndFindVenues(response);
-
-            return result;
-        }
-
-        /// <summary>
-        /// Searches a group of venues for a specific location and keyword
-        /// </summary>
-        /// <param name="latitude">Lattitude</param>
-        /// <param name="longitude">Longitude</param>
-        public AsyncWebResponse<VenueGroupReponse> BeginFindVenues(double latitude, double longitude)
-        {
-            return BeginFindVenues(string.Empty, latitude, longitude);
-        }
-
-        /// <summary>
-        /// Searches a group of venues for a specific location and keyword
-        /// </summary>
-        /// <param name="text">Matching venue to search for (use null/empty to search all)</param>
-        /// <param name="latitude">Lattitude</param>
-        /// <param name="longitude">Longitude</param>
-        public AsyncWebResponse<VenueGroupReponse> BeginFindVenues(string text, double latitude, double longitude)
-        {
-            var vRequest = new VenuesRequest
+            var vRequest = new VenueRequest
             {
                 Latitude = latitude,
                 Longitude = longitude,
@@ -131,49 +89,42 @@ namespace Squirrel
                 Limit = 50
             };
 
-            return new AsyncWebResponse<VenueGroupReponse>(vRequest.Create(httpRequest));
+            var func = Observable.FromAsyncPattern<VenueRequest, VenueResponse> (this.BeginAsync<VenueRequest, VenueResponse>, this.EndAsync<VenueResponse>);
+            
+            return func(vRequest);
         }
 
-        public void EndFindVenues(AsyncResponse<VenueGroupReponse> response)
-        {
-            var venues = response as AsyncWebResponse<VenueGroupReponse>;
-            ProcessRequestAsync<VenueGroupReponse>(venues.Request, r => venues.Raise(r));
-        }
 
-        /// <summary>
-        /// Gets a venue for a specific venue id.
-        /// </summary>
-        /// <param name="venueId">Target venue id</param>
-        public VenueResponse GetVenue(int venueId)
+        IAsyncResult BeginAsync<T, TRet>(T request, AsyncCallback callback, object state) where T : Request where TRet : ResponseObject
         {
-            this.async = false;
-            VenueResponse result = null;
-            var async = BeginGetVenue(venueId);
-
-            async.OnCompleted += (sender, args) =>
+            var req = request.Create(httpRequest);
+        
+            return httpRequest.BeginGetResponse(req, result =>
             {
-                result = args.Data;
-            };
+                try
+                {
+                    exception = null;
 
-            EndGetVenue(async);
+                    string responseText = httpRequest.GetResponse(req, result);
 
-            return result;
+                    callback(new FourSquareAsyncResult(ProcessResponse<TRet>(responseText)));
+                }
+                catch (FourSquareException ex)
+                {
+                    exception = ex;
+                }
+
+            }, state);
         }
 
-        /// <summary>
-        /// Gets a venue for a specific venue id.
-        /// </summary>
-        /// <param name="venueId">Target venue id</param>
-        public AsyncWebResponse<VenueResponse> BeginGetVenue(int venueId)
+        T EndAsync<T>(IAsyncResult result) where T : ResponseObject
         {
-            var vRequest = new VenueRequest { VenueId = venueId };
-            return new AsyncWebResponse<VenueResponse>(vRequest.Create(httpRequest));
-        }
+            if (result.IsCompleted)
+            {
+                return (T)result.AsyncState;
+            }
 
-        public  void EndGetVenue(AsyncResponse<VenueResponse> response)
-        {
-            var result = response as AsyncWebResponse<VenueResponse>;
-            ProcessRequestAsync<VenueResponse>(result.Request, r => result.Raise(r));
+            return default(T);
         }
 
         /// <summary>
@@ -317,14 +268,21 @@ namespace Squirrel
                 {
                     try
                     {
+                        exception = null;
+
                         string responseText = httpRequest.GetResponse(req, result);
+                        
                         obj = ProcessResponse<T>(responseText);
+                        
                         var ret = func(obj);
+                        
                         if (!string.IsNullOrEmpty(ret.Error))
                             throw new FourSquareException(ret.Error);
-                        action(ret);
+                        
+                        if (action != null)
+                            action(ret);
                     }
-                    catch (Exception ex)
+                    catch (FourSquareException ex)
                     {
                         exception = ex;
                     }
@@ -360,7 +318,7 @@ namespace Squirrel
 
         T ProcessResponse<T>(string responseString) where T : ResponseObject
         {
-            T obj;
+            Responses.FourSquareResponse<T> response;
 
             var serializer = new JsonSerializer
             {
@@ -373,25 +331,20 @@ namespace Squirrel
 
             using (var reader = new StringReader(responseString))
             {
-                obj = serializer.Deserialize<T>(new JsonTextReader(reader));
+                response = serializer.Deserialize<Responses.FourSquareResponse<T>>(new JsonTextReader(reader));
             }
 
-            return obj;
-        }
-
-        bool HasCredientials()
-        {
-            return string.IsNullOrEmpty(this.username) && !string.IsNullOrEmpty(this.password);
+            return response.Response;
         }
 
         #endregion
-
-        private IHttpRequestProxy httpRequest;
-
         private bool async;
         private string username;
         private string password;
 
         private Exception exception;
+
+        private readonly IHttpRequestProxy httpRequest;
+
     }
 }

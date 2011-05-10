@@ -61,7 +61,7 @@ namespace Squirrel
 
         #region IUrlProcessor Members
 
-        internal HttpWebRequest Create(IHttpRequestProxy proxy)
+        public override HttpWebRequest Create(IHttpRequestProxy proxy)
         {
             if (VenueId == 0)
             {

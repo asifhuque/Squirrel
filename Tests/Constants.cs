@@ -12,7 +12,7 @@
 
 #endif
 
-        public const string BaseUrl = "http://api.foursquare.com/v1/";
+        public const string BaseUrl = "https://api.foursquare.com/v2/";
 
     }
 }

@@ -12,7 +12,7 @@ namespace Squirrel
     {
         #region IRequestUrl Members
 
-        public HttpWebRequest Create(IHttpRequestProxy proxy)
+        public override HttpWebRequest Create(IHttpRequestProxy proxy)
         {
             return Create(this, proxy);
         }

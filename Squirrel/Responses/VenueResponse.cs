@@ -23,6 +23,21 @@ namespace Squirrel
             }
         }
 
+        /// <summary>
+        ///  Get or sets id of the user
+        /// </summary>
+        [JsonProperty("groups")]
+        public IList<VenueGroup> Groups
+        {
+            get { return groups; }
+            set
+            {
+                groups = value;
+                OnPropertyChanged("Groups");
+            }
+        }
+
         private Venue venue;
+        private IList<VenueGroup> groups = new List<VenueGroup>();
     }
 }

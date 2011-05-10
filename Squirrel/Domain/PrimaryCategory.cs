@@ -5,20 +5,7 @@ namespace Squirrel.Domain
 {
     public class PrimaryCategory : ResponseObject
     {
-        /// <summary>
-        ///  Get or sets id of the category
-        /// </summary>
-        [JsonProperty("id")]
-        public int Id
-        {
-            get { return id; }
-            set
-            {
-                id = value;
-                OnPropertyChanged("Id");
-            }
-        }
-
+      
         /// <summary>
         ///  Get or sets id of the venue
         /// </summary>

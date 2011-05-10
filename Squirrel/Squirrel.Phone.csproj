@@ -42,6 +42,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Phone.Reactive" />
     <Reference Include="Newtonsoft.Json.Phone, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Lib\Silverlight\Newtonsoft.Json.Phone.dll</HintPath>
@@ -49,18 +50,24 @@
     <Reference Include="system" />
     <Reference Include="System.Core" />
     <Reference Include="System.Net" />
+    <Reference Include="System.Observable" />
     <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstraction\IDomainResponse.cs" />
+    <Compile Include="Abstraction\IVenueContext.cs" />
+    <Compile Include="Abstraction\IResponseObject.cs" />
     <Compile Include="Abstraction\IHttpRequestProxy.cs" />
     <Compile Include="Abstraction\Request.cs" />
     <Compile Include="AsyncResponse.cs" />
     <Compile Include="Attributes\RequestMethodAttribute.cs" />
     <Compile Include="Attributes\RequestPropertyAttribute.cs" />
+    <Compile Include="Attributes\VersionAttribute.cs" />
     <Compile Include="Constants.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Client.cs" />
+    <Compile Include="Domain\Contact.cs" />
+    <Compile Include="Domain\Location.cs" />
     <Compile Include="Domain\Badge.cs" />
     <Compile Include="Domain\Base\ResponseObject.cs" />
     <Compile Include="Domain\Category.cs" />
@@ -78,6 +85,7 @@
     <Compile Include="Domain\User.cs" />
     <Compile Include="Domain\Venue.cs" />
     <Compile Include="Domain\VenueGroup.cs" />
+    <Compile Include="FourSquareAsyncResult.cs" />
     <Compile Include="FourSquareContext.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -95,12 +103,11 @@
     <Compile Include="Requests\CheckInRequest.cs" />
     <Compile Include="Requests\UserRequest.cs" />
     <Compile Include="Requests\VenueRequest.cs" />
-    <Compile Include="Requests\VenuesRequest.cs" />
     <Compile Include="Responses\AsyncWebResponse.cs" />
     <Compile Include="Responses\CategoryResponse.cs" />
     <Compile Include="Responses\CheckInResponse.cs" />
+    <Compile Include="Responses\FourSquareResponse.cs" />
     <Compile Include="Responses\UserResponse.cs" />
-    <Compile Include="Responses\VenueGroupResponse.cs" />
     <Compile Include="Responses\VenueResponse.cs" />
     <Compile Include="UrlBuilder.cs" />
     <Compile Include="WebUtility.cs" />

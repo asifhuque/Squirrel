@@ -13,46 +13,46 @@ namespace Squirrel.Tests.Integration
     [TestFixture]
     public class AuthorizationTest : BaseFixture
     {
-        [Test, Asynchronous]
-        public void ShouldAssertUserForValidCredentials()
-        {
-            var context = new FourSquareContext(username, password, async);
+    //    [Test, Asynchronous]
+    //    public void ShouldAssertUserForValidCredentials()
+    //    {
+    //        var context = new FourSquareContext(username, password, async);
 
-            var result = context.BeginGetUser();
+    //        var result = context.BeginGetUser();
 
-            result.OnCompleted += (sender, args) =>
-            {
-                var data = args.Data;
-                Assert.IsTrue(data.User.Id > 0);
-                EnqueueTestComplete();
-            };
+    //        result.OnCompleted += (sender, args) =>
+    //        {
+    //            var data = args.Data;
+    //            Assert.IsTrue(data.User.Id > 0);
+    //            EnqueueTestComplete();
+    //        };
 
 
-            context.EndGetUser(result);
-        }
+    //        context.EndGetUser(result);
+    //    }
 
-        [Test, Asynchronous]
-        public void ShouldAssertGetUserForId()
-        {
-            FourSquareContext context = new FourSquareContext(username, password, async);
+    //    [Test, Asynchronous]
+    //    public void ShouldAssertGetUserForId()
+    //    {
+    //        FourSquareContext context = new FourSquareContext(username, password, async);
 
-            int userId = 33;
+    //        int userId = 33;
 
-            bool badges = false;
-            bool mayor = false;
+    //        bool badges = false;
+    //        bool mayor = false;
 
-            var result = context.BeginGetUser(userId, true);
+    //        var result = context.BeginGetUser(userId, true);
 
             
-            result.OnCompleted += (sender, args) =>
-            {
-                var data = args.Data;
-                Assert.AreEqual(data.User.Id, 33);
-                EnqueueTestComplete();
-            };
+    //        result.OnCompleted += (sender, args) =>
+    //        {
+    //            var data = args.Data;
+    //            Assert.AreEqual(data.User.Id, 33);
+    //            EnqueueTestComplete();
+    //        };
 
-            context.EndGetUser(result);
-        }
+    //        context.EndGetUser(result);
+    //    }
 
         private string username = Constants.Username;
         private string password = Constants.Password;

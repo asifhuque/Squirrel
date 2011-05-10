@@ -79,7 +79,7 @@ namespace Squirrel
             if (methodAttribes.Length == 1)
             {
                 var requestMethodAttr = methodAttribes[0] as RequestMethodAttribute;
-                url = Constants.BaseUrl + requestMethodAttr.Method;
+                url = Constants.EndPoint_V1 + requestMethodAttr.Method;
             }
             return url;
         }

@@ -23,7 +23,7 @@ namespace Squirrel.Domain
         /// <summary>
         ///  Get or sets id of the user
         /// </summary>
-        [JsonProperty("venues")]
+        [JsonProperty("items")]
         public IList<Venue> Venues
         {
             get { return venues; }
