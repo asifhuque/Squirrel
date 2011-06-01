@@ -6,9 +6,9 @@ using System.Text;
 
 namespace Squirrel
 {
-    internal class WebUtility
+    internal class EndpointProcessor
     {
-        internal WebUtility(object target)
+        internal EndpointProcessor(object target)
         {
             this.target = target;
         }
@@ -46,6 +46,15 @@ namespace Squirrel
                             value = Encode(value.ToString());
 
                         list.Add(new NameValuePair { Name = requestAttribute.ElementName, Value = value.ToString() });
+                    }
+                }
+                else
+                {
+                    var requried = propertyInfo.FindAttribute<RequiredAttribute>();
+
+                    if (requried != null)
+                    {
+                        throw new FourSquareException(requried.Message);
                     }
                 }
 
@@ -108,23 +117,13 @@ namespace Squirrel
 
         static string GetEndPointAddress(Type target)
         {
-           var attribute =  GetAttribute<VersionAttribute>(target);
+           var attribute =  target.FindAttribute<VersionAttribute>();
 
             if (attribute != null && !attribute.IsLegacy)
             {
                 return Constants.EndPoint_V2;
             }
             return Constants.EndPoint_V1;
-        }
-
-        static T GetAttribute<T>(Type targetType)
-        {
-            object[] methodAttribes = targetType.GetCustomAttributes(typeof(T), false);
-
-            if (methodAttribes.Length == 1)
-                return (T)methodAttribes[0];
-
-            return default(T);
         }
 
         private object target;

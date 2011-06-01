@@ -16,9 +16,9 @@ using Squirrel.Domain;
 using Microsoft.Phone.Reactive;
 namespace Squirrel.Tests
 {
-    [TestFixture]
-    public class TipFixture
-    {
+    //[TestFixture]
+    //public class TipFixture
+    //{
 
-    }
+    //}
 }

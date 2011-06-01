@@ -39,14 +39,30 @@ namespace Squirrel.Domain
         /// <summary>
         /// Gets or sets the creation date
         /// </summary>
-        [JsonProperty("created")]
-        public DateTime CreatedOn
+        [JsonProperty("createdAt")]
+        public int CreatedAt
         {
-            get { return createdOn; }
+            get { return createdAt; }
             set
             {
-                createdOn = value;
-                OnPropertyChanged("CreatedOn");
+                createdAt = value;
+                OnPropertyChanged("CreatedAt");
+            }
+        }
+
+        /// <summary>
+        /// Gets or sets venue associated with the tip.
+        /// </summary>
+        public Venue Venue
+        {
+            get
+            {
+                return venue;
+            }
+            set
+            {
+                venue = value;
+                OnPropertyChanged("Venue");
             }
         }
 
@@ -65,7 +81,8 @@ namespace Squirrel.Domain
         }
 
         private string text;
-        private DateTime createdOn;
+        private int createdAt;
         private User user;
+        private Venue venue;
     }
 }

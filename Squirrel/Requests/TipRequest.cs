@@ -1,21 +1,21 @@
 ﻿using System;
+using System.Net;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Ink;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 using Squirrel.Attributes;
 using Squirrel.Abstraction;
-using System.Net;
 
 namespace Squirrel
 {
-    /// <summary>
-    /// Contains attributes for requesting a venue.
-    /// </summary>
-    [RequestMethod("venues/search"), Version(EndPointVersion.V2)]
-    public class VenueRequest : Request
+   [RequestMethod("tips/search"), Version(EndPointVersion.V2)]
+    public class TipRequest : Request
     {
-        internal VenueRequest()
-        {
-            Limit = 10;
-        }
-
         /// <summary>
         /// Gets or sets the latitude
         /// </summary>
@@ -35,15 +35,13 @@ namespace Squirrel
                 {
                     return string.Empty;
                 }
+
                 return string.Format("{0}, {1}", Latitude, Longitude);
             }
         }
 
-        /// <summary>
-        /// Gets or sets the matching venue text.
-        /// </summary>
-        [RequestProperty("query")]
-        public string Text { get; set; }
+       [RequestProperty("offset")]
+        public int Offset { get; set; }
 
         /// <summary>
         /// Gets or sets the number of venues to include in the search.
@@ -52,15 +50,11 @@ namespace Squirrel
         public int Limit { get; set; }
 
 
+
         #region IRequestUrl Members
 
         public override HttpWebRequest Create(IHttpRequestProxy proxy)
         {
-            if (Limit > 50)
-            {
-                throw new FourSquareException("Default limit is 10 and maximum 50 is allowed.");
-            }
-
             return Create(this, proxy);
         }
 

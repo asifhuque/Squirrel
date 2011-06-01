@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squirrel.Phone", "Squirrel\Squirrel.Phone.csproj", "{13652113-3064-433F-A21F-11F8F49FF33C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squirrel.Phone.Tests", "Tests\Squirrel.Phone.Tests\Squirrel.Phone.Tests.csproj", "{6B18A10D-D1B4-4BB2-852A-28AEEC0E6440}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Squirrel.Phone.Tests", "Tests\Squirrel.Phone.Tests.csproj", "{6B18A10D-D1B4-4BB2-852A-28AEEC0E6440}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

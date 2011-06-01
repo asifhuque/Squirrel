@@ -13,6 +13,18 @@ namespace Squirrel.Tests.Integration
     [TestFixture]
     public class AuthorizationTest : BaseFixture
     {
+        static AuthorizationTest()
+        {
+            Client.Key = "XEDFVOS2ZRQTCXUCOVP2INVQIZYQMYAVQ4F1OF2FN33NHG2U";
+            Client.Secret = "D21NTBFYU3YSTWAULSD2PJHMFXQAXXOQ4QXZ03BMWAQAGQN5";
+        }
+
+        [Test, Asynchronous]
+        public void ShouldAuthenticateUserForValidCredentials()
+        {
+
+        }
+
     //    [Test, Asynchronous]
     //    public void ShouldAssertUserForValidCredentials()
     //    {

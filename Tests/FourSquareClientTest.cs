@@ -16,7 +16,7 @@ namespace Squirrel.Tests
         [Test, Ignore]
         public void ShouldAssertCheckinForLatLongAndVenueName()
         {
-            FourSquareContext context = new FourSquareContext(username, password, false);
+            FourSquareContext context = new FourSquareContext(username, password);
 
             var request = new CheckInRequest
             {
@@ -36,7 +36,7 @@ namespace Squirrel.Tests
         [Test, Ignore]
         public void ShouldAssertCheckinForVenueId()
         {
-            FourSquareContext context = new FourSquareContext(username, password, false);
+            FourSquareContext context = new FourSquareContext(username, password);
 
             var request = new CheckInRequest { VenueId = 9194686, IsPrivate = true };
 

@@ -15,6 +15,7 @@ using Squirrel.Proxy;
 using Squirrel.Domain;
 using Microsoft.Phone.Reactive;
 using Squirrel.Abstraction;
+using Squirrel.Services;
 
 
 namespace Squirrel.Tests
@@ -44,9 +45,10 @@ namespace Squirrel.Tests
         {
             var fakeRequest = Helper.CreateFakeProxy("venues");
         
-            IVenueContext context = new FourSquareContext(fakeRequest);
+            var context = new FourSquareContext(fakeRequest);
+            var service = new VenueService(context);
          
-            context.Search(string.Empty, 23.77, 90.41).ObserveOnDispatcher().Subscribe(response =>
+            service.Search(string.Empty, 23.77, 90.41).ObserveOnDispatcher().Subscribe(response =>
             {
                 Assert.IsTrue(response.Groups.Count == 1);
                 EnqueueTestComplete();

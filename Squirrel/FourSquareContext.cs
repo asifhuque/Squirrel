@@ -14,7 +14,7 @@ namespace Squirrel
     /// <summary>
     /// Entry point class for interacting with foursquare.
     /// </summary>
-    public class FourSquareContext : IVenueContext
+    public class FourSquareContext
     {
         /// <summary>
         /// Initializes new instance of the <see cref="FourSquareContext"/> class.
@@ -46,14 +46,12 @@ namespace Squirrel
             this.password = password;
         }
 
-        /// <summary>
-        /// Gets the current venue context.
-        /// </summary>
-        public IVenueContext Venues
+
+        internal IHttpRequestProxy HttpRequestProxy
         {
             get
             {
-                return this as IVenueContext;
+                return httpRequest;
             }
         }
 
@@ -72,59 +70,6 @@ namespace Squirrel
             req.Method = HttpRequestMethod.POST;
 
             ProcessRequestAsync<CheckInResponse>(req, response);
-        }
-
-        /// <summary>
-        /// Searches a group of venues for a specific location and text
-        /// </summary>
-        /// <param name="latitude">Lattitude</param>
-        /// <param name="longitude">Longitude</param>
-        IObservable<VenueResponse>  IVenueContext.Search(string text, double latitude, double longitude)
-        {
-            var vRequest = new VenueRequest
-            {
-                Latitude = latitude,
-                Longitude = longitude,
-                Text = text,
-                Limit = 50
-            };
-
-            var func = Observable.FromAsyncPattern<VenueRequest, VenueResponse> (this.BeginAsync<VenueRequest, VenueResponse>, this.EndAsync<VenueResponse>);
-            
-            return func(vRequest);
-        }
-
-
-        IAsyncResult BeginAsync<T, TRet>(T request, AsyncCallback callback, object state) where T : Request where TRet : ResponseObject
-        {
-            var req = request.Create(httpRequest);
-        
-            return httpRequest.BeginGetResponse(req, result =>
-            {
-                try
-                {
-                    exception = null;
-
-                    string responseText = httpRequest.GetResponse(req, result);
-
-                    callback(new FourSquareAsyncResult(ProcessResponse<TRet>(responseText)));
-                }
-                catch (FourSquareException ex)
-                {
-                    exception = ex;
-                }
-
-            }, state);
-        }
-
-        T EndAsync<T>(IAsyncResult result) where T : ResponseObject
-        {
-            if (result.IsCompleted)
-            {
-                return (T)result.AsyncState;
-            }
-
-            return default(T);
         }
 
         /// <summary>
@@ -247,6 +192,7 @@ namespace Squirrel
             ProcessRequestAsync<CategoryResponse>(result.Request, r => result.Raise(r));
         }
 
+
         #region Private methods
 
         void ProcessRequestAsync<T>(HttpWebRequest req, Action<T> action) where T : ResponseObject
@@ -343,8 +289,6 @@ namespace Squirrel
         private string password;
 
         private Exception exception;
-
         private readonly IHttpRequestProxy httpRequest;
-
     }
 }

@@ -1,13 +1,13 @@
-﻿
+﻿using Microsoft.Silverlight.Testing;
+
 namespace Squirrel.Tests
 {
-    public partial class BaseFixture
+    public partial class BaseFixture : SilverlightTest
     {
-        protected const bool async = false;
-
-        public void EnqueueTestComplete()
+        protected BaseFixture()
         {
-
+            //Client.Key = "XEDFVOS2ZRQTCXUCOVP2INVQIZYQMYAVQ4F1OF2FN33NHG2U";
+            //Client.Secret = "D21NTBFYU3YSTWAULSD2PJHMFXQAXXOQ4QXZ03BMWAQAGQN5";
         }
     }
 }

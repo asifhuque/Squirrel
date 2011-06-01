@@ -24,11 +24,11 @@ namespace Squirrel.Abstraction
         /// <returns>Expected web request</returns>
         internal HttpWebRequest Create(object target, IHttpRequestProxy proxy)
         {
-            var urlHelper = new WebUtility(target);
+            var processor = new EndpointProcessor(target);
 
-            string url = urlHelper.GetBaseUrl() + "?";
+            string url = processor.GetBaseUrl() + "?";
 
-            foreach (var parameter in urlHelper.GetParameters())
+            foreach (var parameter in processor.GetParameters())
                 url += string.Format("{0}={1}&", parameter.Name, parameter.Value);
            
             if (url.IndexOf('&') >= 0 || url[url.Length - 1] == '?')

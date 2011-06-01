@@ -54,10 +54,14 @@
     <Reference Include="System.Windows" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Abstraction\IVenueContext.cs" />
+    <Compile Include="Attributes\RequiredAttribute.cs" />
+    <Compile Include="Extensions.cs" />
+    <Compile Include="Services\Abstraction\IAuthService.cs" />
+    <Compile Include="Services\Abstraction\IVenueService.cs" />
     <Compile Include="Abstraction\IResponseObject.cs" />
     <Compile Include="Abstraction\IHttpRequestProxy.cs" />
     <Compile Include="Abstraction\Request.cs" />
+    <Compile Include="Services\Abstraction\ITipService.cs" />
     <Compile Include="AsyncResponse.cs" />
     <Compile Include="Attributes\RequestMethodAttribute.cs" />
     <Compile Include="Attributes\RequestPropertyAttribute.cs" />
@@ -101,16 +105,21 @@
     <Compile Include="Proxy\HttpRequestProxy.cs" />
     <Compile Include="Requests\CategoryRequest.cs" />
     <Compile Include="Requests\CheckInRequest.cs" />
+    <Compile Include="Requests\TipRequest.cs" />
     <Compile Include="Requests\UserRequest.cs" />
     <Compile Include="Requests\VenueRequest.cs" />
     <Compile Include="Responses\AsyncWebResponse.cs" />
     <Compile Include="Responses\CategoryResponse.cs" />
     <Compile Include="Responses\CheckInResponse.cs" />
     <Compile Include="Responses\FourSquareResponse.cs" />
+    <Compile Include="Responses\TipResponse.cs" />
     <Compile Include="Responses\UserResponse.cs" />
     <Compile Include="Responses\VenueResponse.cs" />
-    <Compile Include="UrlBuilder.cs" />
-    <Compile Include="WebUtility.cs" />
+    <Compile Include="Services\AuthService.cs" />
+    <Compile Include="Services\Service.cs" />
+    <Compile Include="Services\TipService.cs" />
+    <Compile Include="Services\VenueService.cs" />
+    <Compile Include="EndpointProcessor.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.$(TargetFrameworkProfile).Overrides.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\Silverlight for Phone\$(TargetFrameworkVersion)\Microsoft.Silverlight.CSharp.targets" />
