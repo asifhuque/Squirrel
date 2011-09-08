@@ -74,8 +74,8 @@
     <Compile Include="FakeHttpRequestProxy.cs" />
     <Compile Include="FourSquareClientTest.cs" />
     <Compile Include="Helper.cs" />
-    <Compile Include="Integration\AuthorizationTest.cs" />
     <Compile Include="Integration\CategoryTest.cs" />
+    <Compile Include="Integration\CheckinTest.cs" />
     <Compile Include="Integration\FindVenueTest.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>
@@ -101,6 +101,8 @@
     <EmbeddedResource Include="Responses\tips.json" />
     <EmbeddedResource Include="Responses\venue.json" />
     <EmbeddedResource Include="Responses\venues.json" />
+    <EmbeddedResource Include="Responses\categories.json" />
+    <EmbeddedResource Include="Responses\checkin.json" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="ApplicationIcon.png">

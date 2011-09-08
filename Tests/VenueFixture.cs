@@ -12,11 +12,8 @@ using System;
 #endif
 
 using Squirrel.Proxy;
-using Squirrel.Domain;
 using Microsoft.Phone.Reactive;
-using Squirrel.Abstraction;
 using Squirrel.Services;
-
 
 namespace Squirrel.Tests
 {

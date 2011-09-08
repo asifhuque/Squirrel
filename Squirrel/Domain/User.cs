@@ -136,7 +136,7 @@ namespace Squirrel.Domain
         /// Gets or sets status of the user.
         /// </summary>
         [JsonProperty("checkin")]
-        public CheckIn CheckIn
+        public Checkin CheckIn
         {
             get { return checkIn; }
             set
@@ -169,7 +169,7 @@ namespace Squirrel.Domain
         private string email;
         private Setttings settings;
         private Status status;
-        private CheckIn checkIn;
+        private Checkin checkIn;
 
         private IList<Badge> badges = new List<Badge>();
 

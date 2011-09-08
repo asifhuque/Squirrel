@@ -3,11 +3,23 @@ using Newtonsoft.Json.Serialization;
 using Squirrel.Abstraction;
 using System.ComponentModel;
 using System;
+using System.Collections.Generic;
 
 namespace Squirrel.Domain.Base
 {
     public abstract class ResponseObject : INotifyPropertyChanged, IResponseObject
     {
+        [JsonProperty("error")]
+        public string Error
+        {
+            get { return error; }
+            set
+            {
+                error = value;
+                OnPropertyChanged("Error");
+            }
+        }
+
         /// <summary>
         ///  Get or sets id of the venue
         /// </summary>
@@ -21,18 +33,36 @@ namespace Squirrel.Domain.Base
                 OnPropertyChanged("Id");
             }
         }
-
-        [JsonProperty("error")]
-        public string Error
+        
+        /// <summary>
+        /// Gets or set the meta for the response.
+        /// </summary>
+        [JsonProperty("meta")]
+        public Meta Meta
         {
-            get { return error; }
+            get { return meta; }
             set
             {
-                error = value;
-                OnPropertyChanged("Error");
+                meta = value;
+                OnPropertyChanged("Meta");
             }
         }
 
+
+        /// <summary>
+        ///  Get or sets id of the user
+        /// </summary>
+        [JsonProperty("notifications")]
+        public IList<Notification> Notifications
+        {
+            get { return notifications; }
+            set
+            {
+                notifications = value;
+                OnPropertyChanged("Notifications");
+            }
+        }
+    
         #region INotifyPropertyChanged Members
 
         ///<summary>
@@ -48,7 +78,9 @@ namespace Squirrel.Domain.Base
             if (handler != null) handler(this, e);
         }
 
-        private string id;
         private string error;
+        private string id;
+        private Meta meta;
+        private IList<Notification> notifications = new List<Notification>();
     }
 }

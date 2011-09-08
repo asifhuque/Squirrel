@@ -23,8 +23,39 @@ namespace Squirrel.Tests
         [Test, ExpectedException(typeof(FourSquareException))]
         public void ShouldThrowExceptionWhenNoLocationIsSupplied()
         {
-            TipRequest request = new TipRequest();
+            var request = new Requests.Tips.SearchRequest();
             var req = request.Create(new HttpRequestProxy());
+        }
+
+        [Test, ExpectedException(typeof(FourSquareException))]
+        public void ShouldThrowForInvalidVenueIdAndTextForAddRequest()
+        {
+            new Requests.Tips.AddRequest().Create(new HttpRequestProxy());
+        }
+
+        [Test]
+        public void ShouldAssertWhenVenuIdAndTextIsProvidedForAddRequest()
+        {
+            new Requests.Tips.AddRequest { VenueId = "10", Text = "hello" }.Create(new HttpRequestProxy());
+        }
+
+        [Test, Asynchronous]
+        public void ShouldAssertTipAdd()
+        {
+            var fakeRequest = Helper.CreateFakeProxy("tips");
+
+            var context = new FourSquareContext(fakeRequest);
+            var service = new TipService(context);
+
+            service.Add("123" , "hello").ObserveOnDispatcher().Subscribe(response =>
+            {
+                EnqueueTestComplete();
+            });
+
+            Assert.AreEqual(fakeRequest.Request.Method, "POST");
+            Assert.AreEqual(fakeRequest.Request.ContentType, "application/json");
+            Assert.AreEqual("/v2/tips/add", fakeRequest.Request.RequestUri.AbsolutePath);
+            Assert.AreEqual("?venueId=123&text=hello", fakeRequest.Request.RequestUri.Query);
         }
 
         [Test, Asynchronous]

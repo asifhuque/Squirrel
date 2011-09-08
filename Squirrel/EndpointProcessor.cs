@@ -110,7 +110,15 @@ namespace Squirrel
             if (methodAttribes.Length == 1)
             {
                 var requestMethodAttr = methodAttribes[0] as RequestMethodAttribute;
-                url = GetEndPointAddress(targetType) + requestMethodAttr.Method;
+
+                if (requestMethodAttr.Method.IndexOf("http://") >= 0)
+                {
+                    url = requestMethodAttr.Method;
+                }
+                else
+                {
+                    url = GetEndPointAddress(targetType) + requestMethodAttr.Method;
+                }
             }
             return url;
         }

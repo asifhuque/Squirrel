@@ -20,7 +20,6 @@ namespace Squirrel.Tests
             }
         }
 
-
         internal static FakeHttpRequestProxy CreateFakeProxy(string method)
         {
             var responseString = ReadResponseFile(method + ".json");

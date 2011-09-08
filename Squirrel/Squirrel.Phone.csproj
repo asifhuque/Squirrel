@@ -42,6 +42,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.Phone" />
     <Reference Include="Microsoft.Phone.Reactive" />
     <Reference Include="Newtonsoft.Json.Phone, Version=4.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
@@ -55,8 +56,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Attributes\RequiredAttribute.cs" />
+    <Compile Include="Domain\CheckinType.cs" />
+    <Compile Include="Domain\Flat.cs" />
+    <Compile Include="Domain\Meta.cs" />
+    <Compile Include="Domain\Notification.cs" />
     <Compile Include="Extensions.cs" />
+    <Compile Include="Requests\OAuthRequest.cs" />
+    <Compile Include="Requests\OAuthResponeType.cs" />
+    <Compile Include="Requests\OAuthTokenRequest.cs" />
+    <Compile Include="Requests\Tips\AddRequest.cs" />
+    <Compile Include="Responses\AuthTokenResponse.cs" />
     <Compile Include="Services\Abstraction\IAuthService.cs" />
+    <Compile Include="Services\Abstraction\ICheckInService.cs" />
     <Compile Include="Services\Abstraction\IVenueService.cs" />
     <Compile Include="Abstraction\IResponseObject.cs" />
     <Compile Include="Abstraction\IHttpRequestProxy.cs" />
@@ -75,7 +86,7 @@
     <Compile Include="Domain\Badge.cs" />
     <Compile Include="Domain\Base\ResponseObject.cs" />
     <Compile Include="Domain\Category.cs" />
-    <Compile Include="Domain\CheckIn.cs" />
+    <Compile Include="Domain\Checkin.cs" />
     <Compile Include="Domain\Friend.cs" />
     <Compile Include="Domain\Mayor.cs" />
     <Compile Include="Domain\PrimaryCategory.cs" />
@@ -105,17 +116,19 @@
     <Compile Include="Proxy\HttpRequestProxy.cs" />
     <Compile Include="Requests\CategoryRequest.cs" />
     <Compile Include="Requests\CheckInRequest.cs" />
-    <Compile Include="Requests\TipRequest.cs" />
+    <Compile Include="Requests\Tips\SearchRequest.cs" />
     <Compile Include="Requests\UserRequest.cs" />
     <Compile Include="Requests\VenueRequest.cs" />
     <Compile Include="Responses\AsyncWebResponse.cs" />
     <Compile Include="Responses\CategoryResponse.cs" />
-    <Compile Include="Responses\CheckInResponse.cs" />
+    <Compile Include="Responses\CheckinResponse.cs" />
     <Compile Include="Responses\FourSquareResponse.cs" />
     <Compile Include="Responses\TipResponse.cs" />
     <Compile Include="Responses\UserResponse.cs" />
     <Compile Include="Responses\VenueResponse.cs" />
     <Compile Include="Services\AuthService.cs" />
+    <Compile Include="Services\CategoryService.cs" />
+    <Compile Include="Services\CheckinService.cs" />
     <Compile Include="Services\Service.cs" />
     <Compile Include="Services\TipService.cs" />
     <Compile Include="Services\VenueService.cs" />

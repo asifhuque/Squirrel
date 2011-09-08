@@ -1,20 +1,12 @@
 ﻿using System;
 using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 using Squirrel.Attributes;
 using Squirrel.Abstraction;
 
-namespace Squirrel
+namespace Squirrel.Requests.Tips
 {
    [RequestMethod("tips/search"), Version(EndPointVersion.V2)]
-    public class TipRequest : Request
+    public class SearchRequest : Request
     {
         /// <summary>
         /// Gets or sets the latitude
@@ -48,7 +40,6 @@ namespace Squirrel
         /// </summary>
         [RequestProperty("limit")]
         public int Limit { get; set; }
-
 
 
         #region IRequestUrl Members

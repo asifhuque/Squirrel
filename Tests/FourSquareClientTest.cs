@@ -16,34 +16,34 @@ namespace Squirrel.Tests
         [Test, Ignore]
         public void ShouldAssertCheckinForLatLongAndVenueName()
         {
-            FourSquareContext context = new FourSquareContext(username, password);
+            //FourSquareContext context = new FourSquareContext(username, password);
 
-            var request = new CheckInRequest
-            {
-                Venue = "Barista",
-                Latitude = "23.776516914367676",
-                Longitude = "90.41707277297974",
-                IsPrivate = true,
-            };
+            //var request = new CheckInRequest
+            //{
+            //    Venue = "Barista",
+            //    Latitude = "23.776516914367676",
+            //    Longitude = "90.41707277297974",
+            //    IsPrivate = true,
+            //};
 
-            context.CheckIn(request, delegate(CheckInResponse response)
-            {
-                Assert.IsTrue(response.Id > 0);
-            });
+            //context.CheckIn(request, delegate(CheckInResponse response)
+            //{
+            //    Assert.IsTrue(response.Id > 0);
+            //});
         }
         
         
         [Test, Ignore]
         public void ShouldAssertCheckinForVenueId()
         {
-            FourSquareContext context = new FourSquareContext(username, password);
+            //FourSquareContext context = new FourSquareContext(username, password);
 
-            var request = new CheckInRequest { VenueId = 9194686, IsPrivate = true };
+            //var request = new CheckInRequest { VenueId = 9194686, IsPrivate = true };
 
-            context.CheckIn(request, delegate(CheckInResponse response)
-            {
-                Assert.IsTrue(response.Id > 0);
-            });
+            //context.CheckIn(request, delegate(CheckInResponse response)
+            //{
+            //    Assert.IsTrue(response.Id > 0);
+            //});
         }
       
         private string username = Constants.Username;

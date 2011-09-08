@@ -14,6 +14,14 @@ namespace Squirrel.Abstraction
         HttpWebRequest Create(string url);
 
         /// <summary>
+        /// Creates a web request from a specific url.
+        /// </summary>
+        /// <param name="url">Target url.</param>
+        /// <param name="method">Reuqest method</param>
+        /// <returns>Web request instance.</returns>
+        HttpWebRequest Create(string url, string method);
+
+        /// <summary>
         /// Gets response text from the specified request.
         /// </summary>
         /// <param name="request">Request object.</param>
@@ -27,5 +35,10 @@ namespace Squirrel.Abstraction
         /// <param name="callback">Target callback</param>
         /// <param name="state">Target object instance</param>
         IAsyncResult BeginGetResponse(HttpWebRequest request, AsyncCallback callback, object state);
+
+        /// <summary>
+        /// Get or sets the http request method.
+        /// </summary>
+        string Method { get; set; }
     }
 }

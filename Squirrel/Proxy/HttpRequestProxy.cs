@@ -2,6 +2,7 @@
 using System.Net;
 using System;
 using System.IO;
+using System.Text;
 
 namespace Squirrel.Proxy
 {
@@ -10,14 +11,40 @@ namespace Squirrel.Proxy
         #region IHttpRequest Members
 
         /// <summary>
+        /// Gets or sets the request method. Ex. POST /GET.
+        /// </summary>
+        public string Method { get; set; }
+
+
+        /// <summary>
         /// Creates a web request from a specific url.
         /// </summary>
         /// <param name="url">Target url.</param>
         /// <returns>Web request instance.</returns>
         public HttpWebRequest Create(string url)
         {
-            var req = (HttpWebRequest) HttpWebRequest.Create(url);
-            req.UserAgent = "Squirrel:0.5.0 Guid/" + Guid.NewGuid().ToString("N");
+            return Create(url, HttpRequestMethod.GET);
+        }
+
+        /// <summary>
+        /// Creates a web request from a specific url.
+        /// </summary>
+        /// <param name="url">Target url.</param>
+        /// <returns>Web request instance.</returns>
+        public HttpWebRequest Create(string url, string method)
+        {
+            HttpWebRequest req = null;
+            if (method == HttpRequestMethod.POST)
+            {
+                req = (HttpWebRequest)HttpWebRequest.Create(url);
+                req.ContentType = "application/json";
+                req.Method = method;
+
+            }
+            else
+            {
+                req = (HttpWebRequest)HttpWebRequest.Create(url);
+            }
             return req;
         }
 

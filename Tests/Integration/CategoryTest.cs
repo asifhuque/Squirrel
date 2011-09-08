@@ -9,29 +9,29 @@ using NUnit.Framework;
 #endif
 
 using System.Linq;
+using Squirrel.Services;
+using Microsoft.Phone.Reactive;
 
 namespace Squirrel.Tests.Integration
 {
     [TestFixture]
     public class CategoryTest : BaseFixture
     {
-        //[Test, Asynchronous]
-        //public void ShouldAssertHierarchalCategories()
-        //{
-        //    var context = new FourSquareContext(async);
+        [Test, Asynchronous]
+        public void ShoulAssertToExpectedResponseWhenGetAllCategoriesIsCalled()
+        {
+            var fakeRequest = Helper.CreateFakeProxy("categories");
 
-        //    var result = context.BeginGetCategories();
-                
-        //    result.OnCompleted += (sender, args) =>
-        //    {
-        //        var response = args.Data;
-        //        Assert.IsTrue(response.Categories.Count > 0);
-        //        Assert.IsTrue(response.Categories.First().SubCategories.Count > 0);
+            var context = new FourSquareContext(fakeRequest);
+            var service = new VenueService(context);
 
-        //        EnqueueTestComplete();
-        //    };
-
-        //    context.EndGetCategories(result);
-        //}
+            service.GetAllCategories().ObserveOnDispatcher().Subscribe(response => 
+            {
+                Assert.IsTrue(response.Categories.Count == 8);
+                Assert.IsTrue(response.Categories.First().Categories.Count > 0);
+       
+                EnqueueTestComplete();
+            });
+        }
     }
 }

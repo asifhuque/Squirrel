@@ -25,5 +25,5 @@
             </shell:ApplicationBar.MenuItems>
         </shell:ApplicationBar>
     </phone:PhoneApplicationPage.ApplicationBar>-->
-
+    <phone:WebBrowser Name="webBrowser1" />
 </phone:PhoneApplicationPage>

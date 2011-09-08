@@ -4,10 +4,12 @@ namespace Squirrel.Tests
 {
     public partial class BaseFixture : SilverlightTest
     {
-        protected BaseFixture()
+        protected FourSquareContext CreateContext(string target)
         {
-            //Client.Key = "XEDFVOS2ZRQTCXUCOVP2INVQIZYQMYAVQ4F1OF2FN33NHG2U";
-            //Client.Secret = "D21NTBFYU3YSTWAULSD2PJHMFXQAXXOQ4QXZ03BMWAQAGQN5";
+            var fakeRequest = Helper.CreateFakeProxy(target);
+            var context = new FourSquareContext(fakeRequest);
+            
+            return context;
         }
     }
 }

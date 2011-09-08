@@ -8,20 +8,29 @@ namespace Squirrel
     public class Client
     {
         /// <summary>
-        /// Gets or sets the client id.
+        /// Set your client id associated with foursquare
         /// </summary>
         public static string Key
         {
-            get;
+            internal get;
             set;
         }
 
         /// <summary>
-        /// Gets or sets the client secret
+        /// Set your client secrect associated with foursquare
         /// </summary>
         public static string Secret
         {
-            get;
+            internal get;
+            set;
+        }
+
+        /// <summary>
+        /// Set your registered url with foursquare
+        /// </summary>
+        public static string RedirectUrl
+        {
+            internal get;
             set;
         }
     }

@@ -7,35 +7,51 @@ using Squirrel.Domain.Base;
 
 namespace Squirrel.Domain
 {
-    public class CheckIn : ResponseObject
+    public class Checkin : ResponseObject
     {
         /// <summary>
-        /// Gets or sets pings for the settings.
+        /// Gets the type of the special.
         /// </summary>
-        [JsonProperty("ismayor")]
-        public bool IsMayor
+        [JsonProperty("type")]
+        public CheckinType Type
         {
-            get { return isMayor; }
+            get { return type; }
             set
             {
-                isMayor = value;
-                OnPropertyChanged("IsMayor");
+                type = value;
+                OnPropertyChanged("Type");
             }
         }
 
         /// <summary>
         /// Gets or sets email of the user.
         /// </summary>
-        [JsonProperty("display")]
-        public string DisplayMessage
+        [JsonProperty("private")]
+        public bool IsPrivate
         {
-            get { return display; }
+            get { return isPrivate; }
             set
             {
-                display = value;
-                OnPropertyChanged("Display");
+                isPrivate = value;
+                OnPropertyChanged("IsPrivate");
             }
         }
+
+
+        /// <summary>
+        /// Gets or sets timezone for the checkin.
+        /// </summary>
+        [JsonProperty("timeZone")]
+        public string TimeZone
+        {
+            get { return timezone; }
+            set
+            {
+                timezone = value;
+                OnPropertyChanged("TimeZone");
+            }
+        }
+
 
         /// <summary>
         /// Gets or sets email of the user.
@@ -51,8 +67,25 @@ namespace Squirrel.Domain
             }
         }
 
+        /// <summary>
+        /// Gets or sets the location for the check-in
+        /// </summary>
+        [JsonProperty("location")]
+        public Location Location
+        {
+            get { return location; }
+            set
+            {
+                location = value;
+                OnPropertyChanged("Location");
+            }
+        }
+
+        private CheckinType type;
         private Venue venue;
-        private bool isMayor;
-        private string display;
+        private bool isPrivate;
+        private Location location;
+        private string timezone;
+
     }
 }

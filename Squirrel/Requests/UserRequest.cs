@@ -37,7 +37,7 @@ namespace Squirrel
 
         #region IRequest Members
 
-        public override HttpWebRequest Create(IHttpRequestProxy proxy)
+        public override HttpWebRequest Create(IHttpRequestProxy proxy, string method)
         {
             return Create(this, proxy);
         }

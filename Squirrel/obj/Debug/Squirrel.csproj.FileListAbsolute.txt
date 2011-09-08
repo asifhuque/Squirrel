@@ -1,0 +1,12 @@
+C:\Source\Squirrel\Squirrel\bin\Debug\Net35\Squirrel.dll
+C:\Source\Squirrel\Squirrel\bin\Debug\Net35\Squirrel.pdb
+C:\Source\Squirrel\Squirrel\bin\Debug\Net35\Newtonsoft.Json.dll
+C:\Source\Squirrel\Squirrel\obj\Debug\ResolveAssemblyReference.cache
+C:\Source\Squirrel\Squirrel\obj\Debug\Squirrel.dll
+C:\Source\Squirrel\Squirrel\obj\Debug\Squirrel.pdb
+C:\Source\Phone\Squirrel\Squirrel\obj\Debug\ResolveAssemblyReference.cache
+C:\Source\Phone\Squirrel\Squirrel\obj\Debug\Squirrel.dll
+C:\Source\Phone\Squirrel\Squirrel\obj\Debug\Squirrel.pdb
+C:\Source\Phone\Squirrel\Squirrel\bin\Debug\Net35\Squirrel.dll
+C:\Source\Phone\Squirrel\Squirrel\bin\Debug\Net35\Squirrel.pdb
+C:\Source\Phone\Squirrel\Squirrel\bin\Debug\Net35\Newtonsoft.Json.dll

@@ -8,6 +8,7 @@ using Squirrel.Abstraction;
 using Squirrel.Domain.Base;
 using Squirrel.Proxy;
 using Microsoft.Phone.Reactive;
+using System.Windows;
 
 namespace Squirrel
 {
@@ -23,6 +24,15 @@ namespace Squirrel
             : this(new HttpRequestProxy())
         {
             // intentionally left blank.   
+        }
+
+        /// <summary>
+        /// Initializes new instance of the <see cref="FourSquareContext"/> class.
+        /// </summary>
+        public FourSquareContext(string token)
+            : this(new HttpRequestProxy())
+        {
+            this.token = token;
         }
 
         /// <summary>
@@ -56,22 +66,16 @@ namespace Squirrel
         }
 
         /// <summary>
-        /// Checks in to a specific venue or location.
+        /// Gets the access token for the requesting context.
         /// </summary>
-        /// <param name="checkInrequest">Reqeust to check-in</param>
-        public void CheckIn(CheckInRequest checkInrequest, Action<CheckInResponse> response)
+        internal string Token
         {
-            var req = checkInrequest.Create(httpRequest);
-
-            // must be authorized.
-            AuthorizeRequest(req, username, password);
-
-            // must be a post method.
-            req.Method = HttpRequestMethod.POST;
-
-            ProcessRequestAsync<CheckInResponse>(req, response);
+            get
+            {
+                return this.token;
+            }
         }
-
+ 
         /// <summary>
         /// Gets the specific user.
         /// </summary>
@@ -217,7 +221,6 @@ namespace Squirrel
                         exception = null;
 
                         string responseText = httpRequest.GetResponse(req, result);
-                        
                         obj = ProcessResponse<T>(responseText);
                         
                         var ret = func(obj);
@@ -290,5 +293,7 @@ namespace Squirrel
 
         private Exception exception;
         private readonly IHttpRequestProxy httpRequest;
+
+        private string token = string.Empty;
     }
 }

@@ -1,37 +1,79 @@
 using Squirrel.Abstraction;
 using Squirrel.Attributes;
 using System.Net;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Squirrel
 {
+    [Flags]
+    public enum Broadcast
+    {
+        Private = 0x0,
+        Public = 0x1,
+        Facebook = 0x2,
+        Twitter = 0x4
+    }
+
     /// <summary>
     /// Defines the check-in request.
     /// </summary>
-    [RequestMethod("checkin.json")]
-    public class CheckInRequest : Request
+    [RequestMethod("checkins/add"), Version(EndPointVersion.V2)]
+    public class CheckinRequest : Request
     {
+        public Broadcast Broadcast { get; set; }
+
+        [RequestProperty("broadcast")]
+        internal string BroadcastText
+        {
+            get
+            {
+                IList<string> parts = new List<string>();
+
+                if ((Broadcast & Broadcast.Facebook) == Broadcast.Facebook)
+                    parts.Add(Broadcast.Facebook.ToString());
+                if ((Broadcast & Broadcast.Twitter) == Broadcast.Twitter)
+                    parts.Add(Broadcast.Twitter.ToString());
+                if ((Broadcast & Broadcast.Public) == Broadcast.Public)
+                    parts.Add(Broadcast.Public.ToString());
+                if ((Broadcast & Broadcast.Private) == Broadcast.Private)
+                    parts.Add(Broadcast.Private.ToString());
+                if (parts.Count == 0)
+                    parts.Add(Broadcast.Public.ToString());
+
+                return string.Join(",", parts.ToArray()).ToLower();
+            }
+        }
+
         /// <summary>
-        /// Gets or sets if the check-in should be pushed to twitter.
+        /// Gets or sets the latitude
         /// </summary>
-        [RequestProperty("twitter")]
-        public bool PushToTwitter {get;set;}
-        
+        public double Latitude { get; set; }
+
         /// <summary>
-        /// Gets or sets if the check-in should be pushed to facebook.
+        /// Gets or sets the longitude
         /// </summary>
-        [RequestProperty("facebook")]
-        public bool PushToFacebook {get;set;}
-       
-        /// <summary>
-        /// Gets or set if the check-in is private.
-        /// </summary>
-        [RequestProperty("private")]
-        public bool IsPrivate { get; set; }
+        public double Longitude { get; set; }
+
+        [RequestProperty("ll"), Required("Must provide both latitude and longitude")]
+        internal string LatLong
+        {
+            get
+            {
+                if (Latitude == 0 || Longitude == 0)
+                {
+                    return string.Empty;
+                }
+                return string.Format("{0}, {1}", Latitude, Longitude);
+            }
+        }
+
 
         /// <summary>
         /// Gets or sets the venue id.
         /// </summary>
-        [RequestProperty("vid")]
+        [RequestProperty("venueId")]
         public int VenueId { get; set; }
 
         /// <summary>
@@ -46,36 +88,19 @@ namespace Squirrel
         [RequestProperty("shout")]
         public string Shout { get; set; }
 
-        /// <summary>
-        /// Gets or sets the latitude for the check-in
-        /// </summary>
-        [RequestProperty("geolat")]
-        public string Latitude { get; set; }
-
-        /// <summary>
-        /// Gets or sets the longitude for the check-in
-        /// </summary>
-        [RequestProperty("geolong")]
-        public string Longitude { get; set; }
-
-
+      
         #region IUrlProcessor Members
 
         public override HttpWebRequest Create(IHttpRequestProxy proxy)
         {
-            if (VenueId == 0)
+            return Create(proxy, HttpRequestMethod.GET);
+        }
+
+        public override HttpWebRequest Create(IHttpRequestProxy proxy, string method)
+        {
+            if (string.IsNullOrEmpty(Venue) && VenueId == 0)
             {
-                if (string.IsNullOrEmpty(Shout) && string.IsNullOrEmpty(Venue))
-                {
-                    throw new FourSquareException("Must have a venue id");
-                }
-                else if (!string.IsNullOrEmpty(Venue))
-                {
-                    if (string.IsNullOrEmpty(Latitude) || string.IsNullOrEmpty(Longitude))
-                    {
-                        throw new FourSquareException("Must provide a latidue and longitude to make a check-in into an orphan venue");
-                    }
-                }
+                throw new FourSquareException("Must provide a venue name or associated id");
             }
 
             if (!string.IsNullOrEmpty(Shout) && Shout.Length > 140)
@@ -83,7 +108,7 @@ namespace Squirrel
                 throw new FourSquareException("Shout text must be within 140 charecters");
             }
             
-            return Create(this, proxy);
+            return Create(this, proxy, method);
         }
 
         #endregion

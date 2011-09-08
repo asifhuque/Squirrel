@@ -12,5 +12,10 @@ namespace Squirrel.Services.Abstraction
         /// <param name="longitude">Longitude</param>
         /// <returns></returns>
         IObservable<VenueResponse> Search(string text, double latitude, double longitude);
+
+        /// <summary>
+        /// Returns a hierarchical list of categories applied to venues.
+        /// </summary>
+        IObservable<CategoryResponse> GetAllCategories();
     }
 }

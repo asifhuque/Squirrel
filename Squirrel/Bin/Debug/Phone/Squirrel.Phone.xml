@@ -1,0 +1,1005 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Squirrel.Phone</name>
+    </assembly>
+    <members>
+        <member name="T:Squirrel.CheckinRequest">
+            <summary>
+            Defines the check-in request.
+            </summary>
+        </member>
+        <member name="T:Squirrel.Abstraction.Request">
+            <summary>
+            Base request entry-point.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Abstraction.Request.Create(Squirrel.Abstraction.IHttpRequestProxy)">
+            <summary>
+            Creates the web request for a target proxy.
+            </summary>
+            <param name="proxy">Target proxy</param>
+            <returns><see cref="T:System.Net.HttpWebRequest"/> instance</returns>
+        </member>
+        <member name="M:Squirrel.Abstraction.Request.Create(Squirrel.Abstraction.IHttpRequestProxy,System.String)">
+            <summary>
+            Creates the web request for a target proxy.
+            </summary>
+            <param name="proxy">Target proxy</param>
+            <returns><see cref="T:System.Net.HttpWebRequest"/> instance</returns>
+        </member>
+        <member name="M:Squirrel.Abstraction.Request.Create(System.Object,Squirrel.Abstraction.IHttpRequestProxy)">
+            <summary>
+            Creates the web request target request.
+            </summary>
+            <param name="target">Target request object</param>
+            <param name="proxy">Target proxy</param>
+            <returns>Expected web request</returns>
+        </member>
+        <member name="M:Squirrel.Abstraction.Request.Create(System.Object,Squirrel.Abstraction.IHttpRequestProxy,System.String)">
+            <summary>
+            Creates the web request target request.
+            </summary>
+            <param name="target">Target request object</param>
+            <param name="proxy">Target proxy</param>
+            <returns>Expected web request</returns>
+        </member>
+        <member name="P:Squirrel.Abstraction.Request.Key">
+            <summary>
+            Gets the client id.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Abstraction.Request.Secret">
+            <summary>
+            Gets the client secret
+            </summary>
+        </member>
+        <member name="P:Squirrel.Abstraction.Request.OAuthToken">
+            <summary>
+            Gets or sets the oauth token.
+            </summary>
+        </member>
+        <member name="P:Squirrel.CheckinRequest.Latitude">
+            <summary>
+            Gets or sets the latitude
+            </summary>
+        </member>
+        <member name="P:Squirrel.CheckinRequest.Longitude">
+            <summary>
+            Gets or sets the longitude
+            </summary>
+        </member>
+        <member name="P:Squirrel.CheckinRequest.VenueId">
+            <summary>
+            Gets or sets the venue id.
+            </summary>
+        </member>
+        <member name="P:Squirrel.CheckinRequest.Venue">
+            <summary>
+            Gets or sets the venue name.
+            </summary>
+        </member>
+        <member name="P:Squirrel.CheckinRequest.Shout">
+            <summary>
+            Gets or sets the shout text in 140 charecter.
+            </summary>
+        </member>
+        <member name="T:Squirrel.Attributes.RequiredAttribute">
+            <summary>
+            Marks an element as requried 
+            </summary>
+        </member>
+        <member name="P:Squirrel.Attributes.RequiredAttribute.Message">
+            <summary>
+            Returns the message associated with the requried field.
+            </summary>
+        </member>
+        <member name="T:Squirrel.Services.VenueService">
+            <summary>
+            Implements venue realted operations.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Services.Abstraction.IVenueService.Search(System.String,System.Double,System.Double)">
+            <summary>
+            Searches venue based on location and keyword.
+            </summary>
+            <param name="text">Keyword</param>
+            <param name="latitude">Latitude</param>
+            <param name="longitude">Longitude</param>
+            <returns></returns>
+        </member>
+        <member name="M:Squirrel.Services.Abstraction.IVenueService.GetAllCategories">
+            <summary>
+            Returns a hierarchical list of categories applied to venues.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Services.VenueService.Search(System.String,System.Double,System.Double)">
+            <summary>
+            Searches a group of venues for a specific location and text
+            </summary>
+            <param name="latitude">Lattitude</param>
+            <param name="longitude">Longitude</param>
+        </member>
+        <member name="M:Squirrel.Services.VenueService.GetAllCategories">
+            <summary>
+            Returns a hierarchical list of categories applied to venues.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Abstraction.IResponseObject.Id">
+            <summary>
+             Get the id of the reponse object.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Base.ResponseObject.Id">
+            <summary>
+             Get or sets id of the venue
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Base.ResponseObject.Meta">
+            <summary>
+            Gets or set the meta for the response.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Base.ResponseObject.Notifications">
+            <summary>
+             Get or sets id of the user
+            </summary>
+        </member>
+        <member name="E:Squirrel.Domain.Base.ResponseObject.PropertyChanged">
+            <summary>
+            </summary>
+        </member>
+        <member name="P:Squirrel.VenueResponse.Venue">
+            <summary>
+            Gets or sets the venue object.
+            </summary>
+        </member>
+        <member name="P:Squirrel.VenueResponse.Groups">
+            <summary>
+             Get or sets id of the user
+            </summary>
+        </member>
+        <member name="T:Squirrel.AsyncWebResponse`1">
+            <summary>
+            Container for async http response.
+            </summary>
+            <typeparam name="T">Target object type.</typeparam>
+        </member>
+        <member name="P:Squirrel.UserRequest.UserId">
+            <summary>
+            Gets or sets the user Id
+            </summary>
+        </member>
+        <member name="P:Squirrel.UserRequest.TwitterId">
+            <summary>
+            Gets or sets the twitter handle.
+            </summary>
+            <remarks>
+            if you specify both user id  and twitter handle, user id will take precedence.
+            </remarks>
+        </member>
+        <member name="P:Squirrel.UserRequest.Badges">
+            <summary>
+            Includes the badges info for the specific user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.UserRequest.Mayor">
+            <summary>
+            Incldues the mayor information for the specific user.
+            </summary>
+        </member>
+        <member name="T:Squirrel.HttpRequestMethod">
+            <summary>
+            Defines the request type.
+            </summary>
+        </member>
+        <member name="T:Squirrel.Domain.Friend">
+            <summary>
+            Contains the friend response.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Friend.FirstName">
+            <summary>
+            Gets or sets firstName of the friend
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Friend.LastName">
+            <summary>
+            Gets or sets lastName of the friend.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Friend.PhotoUrl">
+            <summary>
+            Gets or sets photo of the friend.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Friend.Gender">
+            <summary>
+            Gets or sets gender of the friend.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Friend.Email">
+            <summary>
+            Gets or sets email of the friend.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Friend.Twitter">
+            <summary>
+            Gets or sets email of the friend.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Friend.Facebook">
+            <summary>
+            Gets or sets email of the friend.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Requests.OAuthRequest.Create">
+            <summary>
+            Creates the request url.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.OAuthRequest.ResponseType">
+            <summary>
+            Gets the reponse type for OAuth
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.OAuthRequest.RedirectUrl">
+            <summary>
+            Gets the redirect associated for the client
+            </summary>
+            
+        </member>
+        <member name="P:Squirrel.Requests.OAuthRequest.ResponseTarget">
+            <summary>
+            Returns the nature of reponse target.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.OAuthRequest.Secret">
+            <summary>
+            Gets the client secret
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.OAuthTokenRequest.Code">
+            <summary>
+            Gets or sets the authorization code.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.OAuthTokenRequest.GrantType">
+            <summary>
+            Gets or sets the grant type for the request.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.OAuthTokenRequest.Secret">
+            <summary>
+            Gets the client secret
+            </summary>
+        </member>
+        <member name="T:Squirrel.Services.TipService">
+            <summary>
+            Implements tip realted operations.
+            </summary>
+        </member>
+        <member name="M:Squirrel.UserResponse.IsSuccess">
+            <summary>
+            Gets if the login process is successful.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Squirrel.UserResponse.User">
+            <summary>
+            Gets or sets the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.NameValuePair.Name">
+            <summary>
+            Gets or sets the name of reqeust param
+            </summary>
+        </member>
+        <member name="P:Squirrel.NameValuePair.Value">
+            <summary>
+            Gets or sets the value of the request param.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Setttings.Pings">
+            <summary>
+            Gets or sets pings for the settings.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Setttings.SendToTwitter">
+            <summary>
+            Gets or sets a value whether to send the update to twitter.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Setttings.SendToFacebook">
+            <summary>
+            Gets or sets a value whether to send the update to facebook.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Mayor.Type">
+            <summary>
+            Gets or sets the type for the mayor
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Mayor.CheckIns">
+            <summary>
+            Gets or set the number of checkins for the mayor 
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Mayor.User">
+            <summary>
+            Gets or set the user
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Mayor.Message">
+            <summary>
+             Gets or sets the message from the mayor.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Contact.Phone">
+            <summary>
+             Get or sets phone number of the venue
+            </summary>
+        </member>
+        <member name="P:Squirrel.CheckinResponse.CheckIn">
+            <summary>
+            Gets or sets status of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Venue.Name">
+            <summary>
+             Get or sets id of the venue
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Venue.Location">
+            <summary>
+             Get or sets address of the venue
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Venue.PrimaryCategory">
+            <summary>
+            Gets the primary category associated with the venue. If
+            nothing is specified then it will return none.png.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Venue.Contact">
+            <summary>
+             Get or sets contact of the venue
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Venue.Verfied">
+            <summary>
+             Get or sets if the venue is verified.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Venue.Stats">
+            <summary>
+             Get or sets phone number of the venue
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Venue.Tips">
+            <summary>
+             Get or sets the tips for the venue.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Venue.Specials">
+            <summary>
+             Get or set the specials associated with this venue.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Venue.Categories">
+            <summary>
+             Get or sets the categories associated with the venue.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Venue.Twitter">
+            <summary>
+             Get or sets the twitter id of the venue
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Category.Name">
+            <summary>
+             Get or sets name of the category
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Category.Icon">
+            <summary>
+            Gets or sets the icon for the category
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Category.BigIcon">
+            <summary>
+            Gets the 64x64 Icon
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Category.Primary">
+            <summary>
+            Gets or sets a value indicating if the it is a 
+            primary category.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Category.Categories">
+            <summary>
+             Get or sets list of sub-categories
+            </summary>
+        </member>
+        <member name="M:Squirrel.Attributes.VersionAttribute.#ctor(Squirrel.Attributes.EndPointVersion)">
+            <summary>
+            Initalizes a new instance of the <see cref="T:Squirrel.Attributes.VersionAttribute"/> class.
+            </summary>
+            <param name="version">Marks endpoint version of the api</param>
+        </member>
+        <member name="P:Squirrel.Attributes.VersionAttribute.IsLegacy">
+            <summary>
+            Gets a value indicating if the legacy mode to be used.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Services.Abstraction.IAuthService.GetAuthorizationUrl">
+             <summary>
+             Gets the authorization url.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Services.Abstraction.IAuthService.GetAccessToken(System.Uri)">
+            <summary>
+            Gets the access token.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Notification.Type">
+            <summary>
+            Gets or sets the type of the notification.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Notification.Item">
+            <summary>
+            Gets the flat item text object.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Services.AuthService.GetAuthorizationUrl">
+            <summary>
+            Get request url.
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="P:Squirrel.Domain.VenueGroup.Type">
+            <summary>
+             Get or sets id of the user
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.VenueGroup.Venues">
+            <summary>
+             Get or sets id of the user
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.FirstName">
+            <summary>
+            Gets or sets firstName of the user
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.LastName">
+            <summary>
+            Gets or sets lastName of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.FriendStatus">
+            <summary>
+            Gets or sets friend status of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.HomeCity">
+            <summary>
+            Gets or sets home city of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.PhotoUrl">
+            <summary>
+            Gets or sets photo of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.Gender">
+            <summary>
+            Gets or sets gender of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.Email">
+            <summary>
+            Gets or sets email of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.Setttings">
+            <summary>
+            Gets or sets settings of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.Status">
+            <summary>
+            Gets or sets status of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.CheckIn">
+            <summary>
+            Gets or sets status of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.User.Badges">
+            <summary>
+             Get or sets id of the user
+            </summary>
+        </member>
+        <member name="M:Squirrel.Services.Abstraction.ICheckInService.CheckIn(System.Double,System.Double,Squirrel.Broadcast,System.String)">
+            <summary>
+            Allows user to check in to a place. 
+            </summary>
+        </member>
+        <member name="M:Squirrel.Services.Abstraction.ICheckInService.CheckIn(Squirrel.CheckinRequest)">
+            <summary>
+            Allows user to check in to a place. 
+            </summary>
+        </member>
+        <member name="P:Squirrel.Responses.FourSquareResponse`1.Response">
+            <summary>
+            Gets or sets target response
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Tip.Text">
+            <summary>
+            Gets or sets the text
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Tip.CreatedAt">
+            <summary>
+            Gets or sets the creation date
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Tip.Venue">
+            <summary>
+            Gets or sets venue associated with the tip.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Tip.User">
+            <summary>
+            Gets or sets the user
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Status.FriendRequestsCount">
+            <summary>
+            Gets or sets settings of the user.
+            </summary>
+        </member>
+        <member name="T:Squirrel.Client">
+            <summary>
+            Defines the client credentials
+            </summary>
+        </member>
+        <member name="P:Squirrel.Client.Key">
+            <summary>
+            Set your client id associated with foursquare
+            </summary>
+        </member>
+        <member name="P:Squirrel.Client.Secret">
+            <summary>
+            Set your client secrect associated with foursquare
+            </summary>
+        </member>
+        <member name="P:Squirrel.Client.RedirectUrl">
+            <summary>
+            Set your registered url with foursquare
+            </summary>
+        </member>
+        <member name="P:Squirrel.TipResponse.Tips">
+            <summary>
+             Get or sets id of the user
+            </summary>
+        </member>
+        <member name="P:Squirrel.FourSquareEventArgs`1.Data">
+            <summary>
+            Gets the data.
+            </summary>
+        </member>
+        <member name="T:Squirrel.Domain.Special">
+            <summary>
+            Defines the special tag.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Special.Type">
+            <summary>
+            Gets the type of the special.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Special.Kind">
+            <summary>
+            Gets the kind of  special.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Special.Message">
+            <summary>
+            Gets the special message.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Special.Venue">
+            <summary>
+            Gets the venue specified.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Abstraction.IHttpRequestProxy.Create(System.String)">
+            <summary>
+            Creates a web request from a specific url.
+            </summary>
+            <param name="url">Target url.</param>
+            <returns>Web request instance.</returns>
+        </member>
+        <member name="M:Squirrel.Abstraction.IHttpRequestProxy.Create(System.String,System.String)">
+            <summary>
+            Creates a web request from a specific url.
+            </summary>
+            <param name="url">Target url.</param>
+            <param name="method">Reuqest method</param>
+            <returns>Web request instance.</returns>
+        </member>
+        <member name="M:Squirrel.Abstraction.IHttpRequestProxy.GetResponse(System.Net.HttpWebRequest,System.IAsyncResult)">
+            <summary>
+            Gets response text from the specified request.
+            </summary>
+            <param name="request">Request object.</param>
+            <returns>Response from server.</returns>
+        </member>
+        <member name="M:Squirrel.Abstraction.IHttpRequestProxy.BeginGetResponse(System.Net.HttpWebRequest,System.AsyncCallback,System.Object)">
+            <summary>
+            Begins the get response process.
+            </summary>
+            <param name="request">Http request object</param>
+            <param name="callback">Target callback</param>
+            <param name="state">Target object instance</param>
+        </member>
+        <member name="P:Squirrel.Abstraction.IHttpRequestProxy.Method">
+            <summary>
+            Get or sets the http request method.
+            </summary>
+        </member>
+        <member name="M:Squirrel.EndpointProcessor.GetDefautlValue(System.Type)">
+            <summary>
+            Gets the default value of the type.
+            </summary>
+            <param name="targetType">Specific target type</param>
+            <returns>Default value</returns>
+        </member>
+        <member name="M:Squirrel.Services.CheckinService.#ctor(Squirrel.FourSquareContext)">
+            <summary>
+            Initializes the new instance of the <see cref="T:Squirrel.Services.CheckinService"/> class.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Services.CheckinService.CheckIn(System.Double,System.Double,Squirrel.Broadcast,System.String)">
+            <summary>
+            Allows user to check in to a place. 
+            </summary>
+        </member>
+        <member name="M:Squirrel.Services.CheckinService.CheckIn(Squirrel.CheckinRequest)">
+            <summary>
+            Allows user to check in to a place. 
+            </summary>
+        </member>
+        <member name="T:Squirrel.CategoryRequest">
+            <summary>
+            Defines the categories request.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Responses.AuthTokenResponse.Token">
+            <summary>
+            Gets or sets the access token
+            </summary>
+        </member>
+        <member name="P:Squirrel.CategoryResponse.Categories">
+            <summary>
+             Get or sets list of categories
+            </summary>
+        </member>
+        <member name="T:Squirrel.VenueRequest">
+            <summary>
+            Contains attributes for requesting a venue.
+            </summary>
+        </member>
+        <member name="P:Squirrel.VenueRequest.Latitude">
+            <summary>
+            Gets or sets the latitude
+            </summary>
+        </member>
+        <member name="P:Squirrel.VenueRequest.Longitude">
+            <summary>
+            Gets or sets the longitude
+            </summary>
+        </member>
+        <member name="P:Squirrel.VenueRequest.Text">
+            <summary>
+            Gets or sets the matching venue text.
+            </summary>
+        </member>
+        <member name="P:Squirrel.VenueRequest.Limit">
+            <summary>
+            Gets or sets the number of venues to include in the search.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Stats.HereNow">
+            <summary>
+            Gets or sets pings for the settings.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.PrimaryCategory.FullName">
+            <summary>
+             Get or sets id of the venue
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.PrimaryCategory.Name">
+            <summary>
+             Get or sets id of the venue
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.PrimaryCategory.IconUrl">
+            <summary>
+             Get or sets id of the venue
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Checkin.Type">
+            <summary>
+            Gets the type of the special.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Checkin.IsPrivate">
+            <summary>
+            Gets or sets email of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Checkin.TimeZone">
+            <summary>
+            Gets or sets timezone for the checkin.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Checkin.Venue">
+            <summary>
+            Gets or sets email of the user.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Checkin.Location">
+            <summary>
+            Gets or sets the location for the check-in
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Badge.Id">
+            <summary>
+             Get or sets id of the user
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Badge.Name">
+            <summary>
+             Get or sets id of the user
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Badge.Icon">
+            <summary>
+             Get or sets id of the user
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Badge.Description">
+            <summary>
+             Get or sets id of the user
+            </summary>
+        </member>
+        <member name="P:Squirrel.Attributes.RequestPropertyAttribute.ElementName">
+            <summary>
+            Gets the element name.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Attributes.RequestPropertyAttribute.Encode">
+            <summary>
+            Gets a value indicating whether to encode the request.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Proxy.HttpRequestProxy.Create(System.String)">
+            <summary>
+            Creates a web request from a specific url.
+            </summary>
+            <param name="url">Target url.</param>
+            <returns>Web request instance.</returns>
+        </member>
+        <member name="M:Squirrel.Proxy.HttpRequestProxy.Create(System.String,System.String)">
+            <summary>
+            Creates a web request from a specific url.
+            </summary>
+            <param name="url">Target url.</param>
+            <returns>Web request instance.</returns>
+        </member>
+        <member name="M:Squirrel.Proxy.HttpRequestProxy.GetResponse(System.Net.HttpWebRequest,System.IAsyncResult)">
+            <summary>
+            Gets response text from the specified request.
+            </summary>
+            <param name="request">Request object.</param>
+            <returns>Response from server.</returns>
+        </member>
+        <member name="M:Squirrel.Proxy.HttpRequestProxy.BeginGetResponse(System.Net.HttpWebRequest,System.AsyncCallback,System.Object)">
+            <summary>
+            Begins the get response process.
+            </summary>
+            <param name="request">Http request object</param>
+            <param name="callback">Target callback</param>
+            <param name="state">Target object instance</param>
+        </member>
+        <member name="P:Squirrel.Proxy.HttpRequestProxy.Method">
+            <summary>
+            Gets or sets the request method. Ex. POST /GET.
+            </summary>
+        </member>
+        <member name="T:Squirrel.Domain.Location">
+            <summary>
+            Defines the location for the associated venue.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Location.Address">
+            <summary>
+             Get or sets address
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Location.CrossStreet">
+            <summary>
+             Get or sets cross street
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Location.City">
+            <summary>
+             Get or sets city
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Location.State">
+            <summary>
+             Get or sets state
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Location.PostalCode">
+            <summary>
+             Get or sets the postal code
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Location.Latitude">
+            <summary>
+             Get or sets the latitude
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Location.Longitude">
+            <summary>
+             Get or sets the longitude
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Location.Distance">
+            <summary>
+             Get or sets distance (Km) of the location
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Location.FullAddress">
+            <summary>
+            Gets the full adress of the venue.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Meta.Code">
+            <summary>
+             Gets or sets the response code for the response.
+            </summary>
+        </member>
+        <member name="T:Squirrel.FourSquareContext">
+            <summary>
+            Entry point class for interacting with foursquare.
+            </summary>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.#ctor">
+            <summary>
+            Initializes new instance of the <see cref="T:Squirrel.FourSquareContext"/> class.
+            </summary>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.#ctor(System.String)">
+            <summary>
+            Initializes new instance of the <see cref="T:Squirrel.FourSquareContext"/> class.
+            </summary>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.#ctor(Squirrel.Abstraction.IHttpRequestProxy)">
+            <summary>
+            Initializes new instance of the <see cref="T:Squirrel.FourSquareContext"/> class.
+            </summary>
+            <param name="request">Target request proxy.</param>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.#ctor(System.String,System.String)">
+            <summary>
+            Initializes new instance of the <see cref="T:Squirrel.FourSquareContext"/> class.
+            </summary>
+            <param name="username">Target username</param>
+            <param name="password">Target password</param>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.GetUser(System.Int32)">
+            <summary>
+            Gets the specific user.
+            </summary>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.BeginGetUser">
+            <summary>
+            Gets the current user.
+            </summary>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.BeginGetUser(System.Int32)">
+            <summary>
+            Gets the specific user.
+            </summary>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.BeginGetUser(System.Int32,System.Boolean)">
+            <summary>
+            Authenticates the specific user and optionally inlcudes mayor and badges detail in response.
+            </summary>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.GetUser(System.Int32,System.Boolean,System.Boolean,System.Action{Squirrel.UserResponse})">
+            <summary>
+            Gets a specific user.
+            </summary>
+            <param name="userId">User id for the user</param>
+            <param name="badges">Specifies whether to include badges</param>
+            <param name="mayor">Specifies whether to include mayor tag</param>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.GetCategories">
+            <summary>
+            Gets the predefined categories and their sub-categories.
+            </summary>
+        </member>
+        <member name="M:Squirrel.FourSquareContext.BeginGetCategories">
+            <summary>
+            Gets the predefined categories and their sub-categories.
+            </summary>
+        </member>
+        <member name="P:Squirrel.FourSquareContext.Token">
+            <summary>
+            Gets the access token for the requesting context.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Score.Points">
+            <summary>
+             Gets or sets the points for a checkin.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Score.Icon">
+            <summary>
+             Gets or sets the points for a checkin.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Domain.Score.Message">
+            <summary>
+             Gets or sets the points for a checkin.
+            </summary>
+        </member>
+        <member name="M:Squirrel.Extensions.FindAttribute``1(System.Reflection.ICustomAttributeProvider)">
+            <summary>
+            Tries to find the target attribute from a specific property.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.Tips.AddRequest.VenueId">
+            <summary>
+            Gets or set the venue where you want to add this tip.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.Tips.AddRequest.Text">
+            <summary>
+            Gets or sets the text for the tip.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.Tips.AddRequest.Url">
+            <summary>
+            Gets or set the url related to this tip.
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.Tips.SearchRequest.Latitude">
+            <summary>
+            Gets or sets the latitude
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.Tips.SearchRequest.Longitude">
+            <summary>
+            Gets or sets the longitude
+            </summary>
+        </member>
+        <member name="P:Squirrel.Requests.Tips.SearchRequest.Limit">
+            <summary>
+            Gets or sets the number of venues to include in the search.
+            </summary>
+        </member>
+    </members>
+</doc>

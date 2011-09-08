@@ -7,7 +7,7 @@ namespace Squirrel
     /// <summary>
     /// Defines the categories request.
     /// </summary>
-    [RequestMethod("categories.json")]
+   [RequestMethod("venues/categories"), Version(EndPointVersion.V2)]
     public class CategoryRequest : Request
     {
         #region IRequestUrl Members

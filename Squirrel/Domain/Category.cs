@@ -74,18 +74,18 @@ namespace Squirrel.Domain
         /// <summary>
         ///  Get or sets list of sub-categories
         /// </summary>
-        [JsonProperty("parents")]
-        public IList<string> Parents
+        [JsonProperty("categories")]
+        public IList<Category> Categories
         {
-            get { return parents; }
+            get { return categories; }
             set
             {
-                parents = value;
-                OnPropertyChanged("Parents");
+                categories = value;
+                OnPropertyChanged("Categories");
             }
         }
 
-        private IList<string> parents = new List<string>();
+        private IList<Category> categories = new List<Category>();
 
         private string icon;
         private string name;

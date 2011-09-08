@@ -52,18 +52,19 @@ namespace Squirrel
         public int Limit { get; set; }
 
 
-        #region IRequestUrl Members
-
         public override HttpWebRequest Create(IHttpRequestProxy proxy)
+        {
+            return Create(proxy, HttpRequestMethod.GET);
+        }
+
+        public override HttpWebRequest Create(IHttpRequestProxy proxy, string method)
         {
             if (Limit > 50)
             {
                 throw new FourSquareException("Default limit is 10 and maximum 50 is allowed.");
             }
 
-            return Create(this, proxy);
+            return Create(this, proxy, method);
         }
-
-        #endregion
     }
 }
