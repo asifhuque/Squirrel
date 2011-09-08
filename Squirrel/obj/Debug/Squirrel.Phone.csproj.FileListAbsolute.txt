@@ -40,4 +40,3 @@ C:\Projects\Phone\Squirrel\Squirrel\Bin\Debug\Phone\Newtonsoft.Json.Phone.pdb
 C:\Projects\Phone\Squirrel\Squirrel\obj\Debug\ResolveAssemblyReference.cache
 C:\Projects\Phone\Squirrel\Squirrel\obj\Debug\Squirrel.Phone.dll
 C:\Projects\Phone\Squirrel\Squirrel\obj\Debug\Squirrel.Phone.pdb
-C:\Source\Phone\Squirrel\Squirrel\Bin\Debug\Phone\Squirrel.Phone.xml

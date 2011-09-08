@@ -18,8 +18,6 @@ namespace Squirrel.Tests.Integration
     [TestFixture]
     public class CheckinTest : BaseFixture
     {
-        private const string token = "EJSAJUXKFJAWF43CB4YP1DC2EYNV3L2CSSIN2FJVKNS5CILY";
-
         [Test, Asynchronous, Tag("test")]
         public void ShoulAssertToExpectedResponseWhenGetAllCategoriesIsCalled()
         {
